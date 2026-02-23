@@ -1,0 +1,2548 @@
+
+
+# Appranium — Complete V2 Architecture Plan
+
+## Master Document for AI-Assisted Code Generation
+
+---
+
+## 1. Project Identity
+
+```
+Name:           Appranium
+Type:           React Single-Page Application (SPA)
+Hosting:        Static (Netlify / Vercel / GitHub Pages)
+Backend:        NONE
+Data Storage:   NONE
+API Keys:       NONE
+Cost:           100% FREE
+Privacy:        All processing in-browser, zero uploads
+```
+
+---
+
+## 2. Technology Stack
+
+```
+Framework:      React 18+ (Create React App or Vite)
+Language:       JavaScript (ES6+)
+Styling:        CSS Modules or plain CSS (no Tailwind CDN — bundle locally or use CSS)
+ZIP Parsing:    JSZip (free, already used)
+Charts:         Recharts (free, React-native charting)
+Icons:          react-icons (free)
+Animations:     CSS keyframes (no library needed)
+Build Tool:     Vite (preferred) or CRA
+Package Mgr:    npm
+```
+
+---
+
+## 3. Complete Folder Structure
+
+```
+appranium/
+├── public/
+│   ├── index.html
+│   ├── favicon.ico
+│   └── manifest.json
+├── src/
+│   ├── index.js
+│   ├── App.js
+│   ├── App.css
+│   │
+│   ├── components/
+│   │   ├── Header/
+│   │   │   ├── Header.jsx
+│   │   │   └── Header.css
+│   │   ├── FileUpload/
+│   │   │   ├── FileUpload.jsx
+│   │   │   └── FileUpload.css
+│   │   ├── PrivacyBadge/
+│   │   │   ├── PrivacyBadge.jsx
+│   │   │   └── PrivacyBadge.css
+│   │   ├── AppOverview/
+│   │   │   ├── AppOverview.jsx
+│   │   │   └── AppOverview.css
+│   │   ├── RiskScore/
+│   │   │   ├── RiskScore.jsx
+│   │   │   └── RiskScore.css
+│   │   ├── SuspiciousCombos/
+│   │   │   ├── SuspiciousCombos.jsx
+│   │   │   └── SuspiciousCombos.css
+│   │   ├── ManifestWarnings/
+│   │   │   ├── ManifestWarnings.jsx
+│   │   │   └── ManifestWarnings.css
+│   │   ├── ComponentExposure/
+│   │   │   ├── ComponentExposure.jsx
+│   │   │   └── ComponentExposure.css
+│   │   ├── RiskCharts/
+│   │   │   ├── RiskCharts.jsx
+│   │   │   └── RiskCharts.css
+│   │   ├── PermissionBreakdown/
+│   │   │   ├── PermissionBreakdown.jsx
+│   │   │   └── PermissionBreakdown.css
+│   │   ├── DataExposureProfile/
+│   │   │   ├── DataExposureProfile.jsx
+│   │   │   └── DataExposureProfile.css
+│   │   ├── SearchFilter/
+│   │   │   ├── SearchFilter.jsx
+│   │   │   └── SearchFilter.css
+│   │   ├── EducationalInsights/
+│   │   │   ├── EducationalInsights.jsx
+│   │   │   └── EducationalInsights.css
+│   │   ├── Footer/
+│   │   │   ├── Footer.jsx
+│   │   │   └── Footer.css
+│   │   └── common/
+│   │       ├── Badge.jsx
+│   │       ├── Card.jsx
+│   │       ├── GaugeCircle.jsx
+│   │       ├── Collapsible.jsx
+│   │       └── common.css
+│   │
+│   ├── utils/
+│   │   ├── fileHandler.js
+│   │   ├── manifestParser.js
+│   │   ├── permissionExtractor.js
+│   │   ├── riskScorer.js
+│   │   ├── comboDetector.js
+│   │   ├── manifestAnalyzer.js
+│   │   ├── componentAnalyzer.js
+│   │   ├── metadataExtractor.js
+│   │   └── domainCategorizer.js
+│   │
+│   ├── data/
+│   │   ├── permissionDatabase.js
+│   │   ├── suspiciousCombos.js
+│   │   ├── domainCategories.js
+│   │   └── educationalContent.js
+│   │
+│   └── hooks/
+│       └── useAnalysis.js
+│
+├── package.json
+├── vite.config.js (or react-scripts config)
+└── README.md
+```
+
+---
+
+## 4. Package.json Dependencies
+
+```json
+{
+  "name": "appranium",
+  "version": "2.0.0",
+  "private": true,
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "jszip": "^3.10.1",
+    "recharts": "^2.12.0",
+    "react-icons": "^5.0.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.0",
+    "vite": "^5.0.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  }
+}
+```
+
+---
+
+## 5. Complete Data Layer Specifications
+
+---
+
+### 5A. `src/data/permissionDatabase.js`
+
+This is the master dictionary. Every permission maps to a risk tier, a human description, and a data domain category.
+
+```javascript
+// FULL EXPORT — single default object
+// Keys: full Android permission string
+// Values: { risk, description, category }
+
+const PERMISSION_DATABASE = {
+  // ========== HIGH RISK ==========
+  'android.permission.CAMERA': {
+    risk: 'high',
+    description: 'Access the device camera to take photos and record video.',
+    category: 'Device Control'
+  },
+  'android.permission.RECORD_AUDIO': {
+    risk: 'high',
+    description: 'Record audio using the device microphone.',
+    category: 'Device Control'
+  },
+  'android.permission.ACCESS_FINE_LOCATION': {
+    risk: 'high',
+    description: 'Access precise GPS location of the device.',
+    category: 'Location'
+  },
+  'android.permission.ACCESS_COARSE_LOCATION': {
+    risk: 'high',
+    description: 'Access approximate location via network triangulation.',
+    category: 'Location'
+  },
+  'android.permission.ACCESS_BACKGROUND_LOCATION': {
+    risk: 'high',
+    description: 'Access location even when the app is in background.',
+    category: 'Location'
+  },
+  'android.permission.READ_CONTACTS': {
+    risk: 'high',
+    description: 'Read all contacts stored on the device.',
+    category: 'Identity'
+  },
+  'android.permission.WRITE_CONTACTS': {
+    risk: 'high',
+    description: 'Modify or delete contacts on the device.',
+    category: 'Identity'
+  },
+  'android.permission.READ_CALL_LOG': {
+    risk: 'high',
+    description: 'Read the user call history.',
+    category: 'Communication'
+  },
+  'android.permission.WRITE_CALL_LOG': {
+    risk: 'high',
+    description: 'Modify or delete call log entries.',
+    category: 'Communication'
+  },
+  'android.permission.READ_SMS': {
+    risk: 'high',
+    description: 'Read SMS messages stored on the device.',
+    category: 'Communication'
+  },
+  'android.permission.SEND_SMS': {
+    risk: 'high',
+    description: 'Send SMS messages, potentially incurring charges.',
+    category: 'Communication'
+  },
+  'android.permission.RECEIVE_SMS': {
+    risk: 'high',
+    description: 'Intercept incoming SMS messages.',
+    category: 'Communication'
+  },
+  'android.permission.READ_PHONE_STATE': {
+    risk: 'high',
+    description: 'Access phone number, IMEI, carrier info, and call state.',
+    category: 'Identity'
+  },
+  'android.permission.READ_PHONE_NUMBERS': {
+    risk: 'high',
+    description: 'Access the phone numbers associated with the device.',
+    category: 'Identity'
+  },
+  'android.permission.CALL_PHONE': {
+    risk: 'high',
+    description: 'Initiate phone calls without user interaction.',
+    category: 'Communication'
+  },
+  'android.permission.READ_EXTERNAL_STORAGE': {
+    risk: 'high',
+    description: 'Read files from shared/external storage.',
+    category: 'Storage'
+  },
+  'android.permission.WRITE_EXTERNAL_STORAGE': {
+    risk: 'high',
+    description: 'Write or delete files on shared/external storage.',
+    category: 'Storage'
+  },
+  'android.permission.READ_MEDIA_IMAGES': {
+    risk: 'high',
+    description: 'Access photos and images on the device.',
+    category: 'Storage'
+  },
+  'android.permission.READ_MEDIA_VIDEO': {
+    risk: 'high',
+    description: 'Access video files on the device.',
+    category: 'Storage'
+  },
+  'android.permission.READ_MEDIA_AUDIO': {
+    risk: 'high',
+    description: 'Access audio files on the device.',
+    category: 'Storage'
+  },
+  'android.permission.READ_CALENDAR': {
+    risk: 'high',
+    description: 'Read calendar events and details.',
+    category: 'Identity'
+  },
+  'android.permission.WRITE_CALENDAR': {
+    risk: 'high',
+    description: 'Create or modify calendar events.',
+    category: 'Identity'
+  },
+  'android.permission.BODY_SENSORS': {
+    risk: 'high',
+    description: 'Access body sensors like heart rate monitor.',
+    category: 'Health'
+  },
+  'android.permission.ACTIVITY_RECOGNITION': {
+    risk: 'high',
+    description: 'Detect physical activity (walking, driving, etc.).',
+    category: 'Health'
+  },
+  'android.permission.SYSTEM_ALERT_WINDOW': {
+    risk: 'high',
+    description: 'Draw overlays on top of other apps. Used in phishing attacks.',
+    category: 'Device Control'
+  },
+  'android.permission.REQUEST_INSTALL_PACKAGES': {
+    risk: 'high',
+    description: 'Request installation of additional APK packages.',
+    category: 'Device Control'
+  },
+  'android.permission.MANAGE_EXTERNAL_STORAGE': {
+    risk: 'high',
+    description: 'Full access to all files on external storage.',
+    category: 'Storage'
+  },
+  'android.permission.GET_ACCOUNTS': {
+    risk: 'high',
+    description: 'Access the list of accounts registered on the device.',
+    category: 'Identity'
+  },
+  'android.permission.USE_BIOMETRIC': {
+    risk: 'high',
+    description: 'Use biometric hardware (fingerprint, face).',
+    category: 'Identity'
+  },
+  'android.permission.BIND_ACCESSIBILITY_SERVICE': {
+    risk: 'high',
+    description: 'Bind to an accessibility service. Can monitor all UI events.',
+    category: 'Device Control'
+  },
+  'android.permission.BIND_DEVICE_ADMIN': {
+    risk: 'high',
+    description: 'Act as a device administrator. Can lock/wipe device.',
+    category: 'Device Control'
+  },
+  'android.permission.PROCESS_OUTGOING_CALLS': {
+    risk: 'high',
+    description: 'Monitor, modify, or abort outgoing calls.',
+    category: 'Communication'
+  },
+  'android.permission.RECEIVE_MMS': {
+    risk: 'high',
+    description: 'Intercept incoming MMS messages.',
+    category: 'Communication'
+  },
+  'android.permission.RECEIVE_WAP_PUSH': {
+    risk: 'high',
+    description: 'Receive WAP push messages.',
+    category: 'Communication'
+  },
+
+  // ========== MEDIUM RISK ==========
+  'android.permission.INTERNET': {
+    risk: 'medium',
+    description: 'Full network access to send and receive data.',
+    category: 'Network'
+  },
+  'android.permission.ACCESS_NETWORK_STATE': {
+    risk: 'medium',
+    description: 'View network connection status (WiFi, mobile data).',
+    category: 'Network'
+  },
+  'android.permission.ACCESS_WIFI_STATE': {
+    risk: 'medium',
+    description: 'View WiFi connection information.',
+    category: 'Network'
+  },
+  'android.permission.CHANGE_WIFI_STATE': {
+    risk: 'medium',
+    description: 'Connect to and disconnect from WiFi networks.',
+    category: 'Network'
+  },
+  'android.permission.CHANGE_NETWORK_STATE': {
+    risk: 'medium',
+    description: 'Change network connectivity state.',
+    category: 'Network'
+  },
+  'android.permission.BLUETOOTH': {
+    risk: 'medium',
+    description: 'Access Bluetooth connectivity.',
+    category: 'Network'
+  },
+  'android.permission.BLUETOOTH_ADMIN': {
+    risk: 'medium',
+    description: 'Discover and pair with Bluetooth devices.',
+    category: 'Network'
+  },
+  'android.permission.BLUETOOTH_CONNECT': {
+    risk: 'medium',
+    description: 'Connect to paired Bluetooth devices.',
+    category: 'Network'
+  },
+  'android.permission.BLUETOOTH_SCAN': {
+    risk: 'medium',
+    description: 'Discover nearby Bluetooth devices.',
+    category: 'Network'
+  },
+  'android.permission.NFC': {
+    risk: 'medium',
+    description: 'Perform NFC (Near Field Communication) operations.',
+    category: 'Network'
+  },
+  'android.permission.VIBRATE': {
+    risk: 'low',
+    description: 'Control the device vibration motor.',
+    category: 'Device Control'
+  },
+  'android.permission.RECEIVE_BOOT_COMPLETED': {
+    risk: 'medium',
+    description: 'Auto-start the app when the device boots.',
+    category: 'Device Control'
+  },
+  'android.permission.FOREGROUND_SERVICE': {
+    risk: 'medium',
+    description: 'Run a foreground service with persistent notification.',
+    category: 'Device Control'
+  },
+  'android.permission.FOREGROUND_SERVICE_LOCATION': {
+    risk: 'medium',
+    description: 'Run a foreground service that accesses location.',
+    category: 'Location'
+  },
+  'android.permission.FOREGROUND_SERVICE_CAMERA': {
+    risk: 'medium',
+    description: 'Run a foreground service that accesses camera.',
+    category: 'Device Control'
+  },
+  'android.permission.FOREGROUND_SERVICE_MICROPHONE': {
+    risk: 'medium',
+    description: 'Run a foreground service that accesses microphone.',
+    category: 'Device Control'
+  },
+  'android.permission.POST_NOTIFICATIONS': {
+    risk: 'medium',
+    description: 'Send push notifications to the user.',
+    category: 'Device Control'
+  },
+  'android.permission.SCHEDULE_EXACT_ALARM': {
+    risk: 'medium',
+    description: 'Schedule alarms at exact times.',
+    category: 'Device Control'
+  },
+  'android.permission.USE_EXACT_ALARM': {
+    risk: 'medium',
+    description: 'Use exact alarm scheduling.',
+    category: 'Device Control'
+  },
+  'android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS': {
+    risk: 'medium',
+    description: 'Request exemption from battery optimization.',
+    category: 'Device Control'
+  },
+  'com.google.android.gms.permission.AD_ID': {
+    risk: 'medium',
+    description: 'Access the Google Advertising ID for ad tracking.',
+    category: 'Identity'
+  },
+  'android.permission.QUERY_ALL_PACKAGES': {
+    risk: 'medium',
+    description: 'See all installed apps on the device.',
+    category: 'Identity'
+  },
+  'com.android.vending.BILLING': {
+    risk: 'medium',
+    description: 'Process in-app purchases via Google Play.',
+    category: 'Financial'
+  },
+  'android.permission.WAKE_LOCK': {
+    risk: 'medium',
+    description: 'Prevent the device from sleeping.',
+    category: 'Device Control'
+  },
+
+  // ========== LOW RISK ==========
+  'android.permission.ACCESS_NOTIFICATION_POLICY': {
+    risk: 'low',
+    description: 'Access the Do Not Disturb notification policy.',
+    category: 'Device Control'
+  },
+  'android.permission.SET_WALLPAPER': {
+    risk: 'low',
+    description: 'Set the device wallpaper.',
+    category: 'Device Control'
+  },
+  'android.permission.SET_ALARM': {
+    risk: 'low',
+    description: 'Set an alarm in the default alarm clock app.',
+    category: 'Device Control'
+  },
+  'android.permission.FLASHLIGHT': {
+    risk: 'low',
+    description: 'Access the device flashlight.',
+    category: 'Device Control'
+  },
+  'android.permission.EXPAND_STATUS_BAR': {
+    risk: 'low',
+    description: 'Expand or collapse the status bar.',
+    category: 'Device Control'
+  },
+  'android.permission.REORDER_TASKS': {
+    risk: 'low',
+    description: 'Reorder running tasks.',
+    category: 'Device Control'
+  },
+  'android.permission.SET_WALLPAPER_HINTS': {
+    risk: 'low',
+    description: 'Set wallpaper size hints.',
+    category: 'Device Control'
+  }
+};
+
+export default PERMISSION_DATABASE;
+```
+
+**IMPORTANT:** Any permission found in the APK that is NOT in this dictionary must be classified as `unknown` risk with a generic description:
+
+```javascript
+// fallback for unknown permissions
+{
+  risk: 'unknown',
+  description: 'This permission is not in our database. Review manually.',
+  category: 'Unknown'
+}
+```
+
+---
+
+### 5B. `src/data/suspiciousCombos.js`
+
+```javascript
+const SUSPICIOUS_COMBOS = [
+  {
+    id: 'surveillance-av',
+    combo: ['android.permission.CAMERA', 'android.permission.RECORD_AUDIO'],
+    risk: 'critical',
+    title: 'Audio + Video Surveillance',
+    reason: 'App can record both audio and video simultaneously, enabling full surveillance capability.'
+  },
+  {
+    id: 'otp-theft',
+    combo: ['android.permission.READ_SMS', 'android.permission.INTERNET'],
+    risk: 'critical',
+    title: 'OTP / SMS Interception',
+    reason: 'App can read SMS messages (including OTPs) and transmit them to external servers.'
+  },
+  {
+    id: 'location-tracking',
+    combo: ['android.permission.ACCESS_FINE_LOCATION', 'android.permission.INTERNET'],
+    risk: 'high',
+    title: 'Real-Time Location Tracking',
+    reason: 'App can track precise GPS location and send it to remote servers in real time.'
+  },
+  {
+    id: 'overlay-phishing',
+    combo: ['android.permission.SYSTEM_ALERT_WINDOW', 'android.permission.READ_SMS'],
+    risk: 'critical',
+    title: 'Overlay Phishing + SMS Theft',
+    reason: 'App can draw fake login screens over other apps while intercepting SMS verification codes.'
+  },
+  {
+    id: 'contact-exfiltration',
+    combo: ['android.permission.READ_CONTACTS', 'android.permission.INTERNET'],
+    risk: 'high',
+    title: 'Contact Data Exfiltration',
+    reason: 'App can read entire contact list and upload it to external servers.'
+  },
+  {
+    id: 'call-interception',
+    combo: ['android.permission.PROCESS_OUTGOING_CALLS', 'android.permission.RECORD_AUDIO'],
+    risk: 'critical',
+    title: 'Call Monitoring + Recording',
+    reason: 'App can intercept outgoing calls and record audio during calls.'
+  },
+  {
+    id: 'file-exfiltration',
+    combo: ['android.permission.READ_EXTERNAL_STORAGE', 'android.permission.INTERNET'],
+    risk: 'high',
+    title: 'File Data Exfiltration',
+    reason: 'App can read all files on external storage and transmit them over network.'
+  },
+  {
+    id: 'background-location',
+    combo: ['android.permission.ACCESS_BACKGROUND_LOCATION', 'android.permission.INTERNET'],
+    risk: 'critical',
+    title: 'Background Location Surveillance',
+    reason: 'App can continuously track location even when not in use and send data externally.'
+  },
+  {
+    id: 'sms-financial',
+    combo: ['android.permission.READ_SMS', 'android.permission.SEND_SMS'],
+    risk: 'critical',
+    title: 'Full SMS Control',
+    reason: 'App can both read and send SMS messages. Can be used for premium SMS fraud or message manipulation.'
+  },
+  {
+    id: 'silent-install',
+    combo: ['android.permission.REQUEST_INSTALL_PACKAGES', 'android.permission.INTERNET'],
+    risk: 'critical',
+    title: 'Remote APK Installation',
+    reason: 'App can download and install additional APKs from the internet.'
+  },
+  {
+    id: 'identity-harvest',
+    combo: ['android.permission.GET_ACCOUNTS', 'android.permission.READ_CONTACTS', 'android.permission.INTERNET'],
+    risk: 'critical',
+    title: 'Identity Harvesting',
+    reason: 'App can access accounts, contacts, and transmit identity information externally.'
+  },
+  {
+    id: 'camera-upload',
+    combo: ['android.permission.CAMERA', 'android.permission.INTERNET'],
+    risk: 'high',
+    title: 'Photo/Video Capture & Upload',
+    reason: 'App can take photos or record video and upload them to external servers.'
+  }
+];
+
+export default SUSPICIOUS_COMBOS;
+```
+
+---
+
+### 5C. `src/data/domainCategories.js`
+
+```javascript
+// Maps category names to display metadata
+const DOMAIN_CATEGORIES = {
+  'Location': {
+    icon: '📍',
+    color: '#e74c3c',
+    description: 'Permissions that access device location data.'
+  },
+  'Communication': {
+    icon: '📞',
+    color: '#e67e22',
+    description: 'Permissions related to calls, SMS, and messaging.'
+  },
+  'Identity': {
+    icon: '👤',
+    color: '#9b59b6',
+    description: 'Permissions accessing personal identity information.'
+  },
+  'Device Control': {
+    icon: '⚙️',
+    color: '#3498db',
+    description: 'Permissions controlling device hardware and features.'
+  },
+  'Storage': {
+    icon: '📁',
+    color: '#f39c12',
+    description: 'Permissions accessing files and media storage.'
+  },
+  'Network': {
+    icon: '🌐',
+    color: '#1abc9c',
+    description: 'Permissions related to internet and network access.'
+  },
+  'Financial': {
+    icon: '💳',
+    color: '#e74c3c',
+    description: 'Permissions related to billing and financial transactions.'
+  },
+  'Health': {
+    icon: '❤️',
+    color: '#e84393',
+    description: 'Permissions accessing health and fitness sensors.'
+  },
+  'Unknown': {
+    icon: '❓',
+    color: '#95a5a6',
+    description: 'Permissions not in our categorization database.'
+  }
+};
+
+export default DOMAIN_CATEGORIES;
+```
+
+---
+
+### 5D. `src/data/educationalContent.js`
+
+```javascript
+const EDUCATIONAL_CONTENT = [
+  {
+    id: 'runtime-permissions',
+    title: 'Runtime Permissions (Android 6.0+)',
+    content: `Starting with Android 6.0 (API level 23), dangerous permissions 
+    must be requested at runtime, not just declared in the manifest. This means 
+    the user sees a dialog before granting sensitive permissions like Camera or 
+    Location. Apps targeting SDK 22 or below bypass this protection entirely 
+    and receive all permissions at install time.`
+  },
+  {
+    id: 'scoped-storage',
+    title: 'Scoped Storage (Android 10+)',
+    content: `Android 10 introduced scoped storage, restricting apps from 
+    freely accessing shared external storage. Apps can only access their own 
+    app-specific directory and specific media files they created. Apps 
+    requesting MANAGE_EXTERNAL_STORAGE bypass this restriction and gain 
+    full file system access — a significant privacy concern.`
+  },
+  {
+    id: 'background-location',
+    title: 'Background Location Restrictions (Android 10+)',
+    content: `Android 10+ requires a separate permission 
+    (ACCESS_BACKGROUND_LOCATION) for apps to access location while running 
+    in the background. Users must explicitly grant this through Settings, 
+    not just a dialog. Apps with this permission can continuously track 
+    your location even when you're not actively using them.`
+  },
+  {
+    id: 'overlay-attacks',
+    title: 'Overlay Attacks (SYSTEM_ALERT_WINDOW)',
+    content: `The SYSTEM_ALERT_WINDOW permission allows an app to draw on 
+    top of other apps. While legitimate uses exist (chat bubbles, screen 
+    tools), malicious apps can use this to create fake login screens that 
+    capture credentials. This is known as a "tapjacking" or "overlay" attack.`
+  },
+  {
+    id: 'exported-components',
+    title: 'Exported Components Risk',
+    content: `When an Android component (Activity, Service, Receiver, Provider) 
+    is marked as exported="true", other apps on the device can interact with it. 
+    Without proper permission checks, this can allow unauthorized apps to trigger 
+    functionality, access data, or exploit the component.`
+  },
+  {
+    id: 'debug-builds',
+    title: 'Debug Builds in Production',
+    content: `If an APK has android:debuggable="true" in its manifest, it 
+    means the app was built in debug mode. This allows anyone to attach a 
+    debugger, inspect memory, and bypass security checks. Production apps 
+    should never have this flag enabled.`
+  }
+];
+
+export default EDUCATIONAL_CONTENT;
+```
+
+---
+
+## 6. Utility Layer — Complete Logic Specifications
+
+---
+
+### 6A. `src/utils/fileHandler.js`
+
+**Purpose:** Accept `.apk` or `.xml` file, extract the AndroidManifest.xml content as a string.
+
+```javascript
+// PSEUDOCODE / SPEC
+
+import JSZip from 'jszip';
+
+/**
+ * @param {File} file - The uploaded file (.apk or .xml)
+ * @returns {Promise<{manifestContent: string, fileType: string, fileName: string}>}
+ */
+export async function handleFile(file) {
+  const fileName = file.name;
+  const extension = fileName.split('.').pop().toLowerCase();
+
+  if (extension === 'xml') {
+    // Read as plain text
+    const text = await file.text();
+    return {
+      manifestContent: text,
+      fileType: 'xml',
+      fileName: fileName
+    };
+  }
+
+  if (extension === 'apk') {
+    // Read as ArrayBuffer, then unzip
+    const arrayBuffer = await file.arrayBuffer();
+    const zip = await JSZip.loadAsync(arrayBuffer);
+
+    // Look for AndroidManifest.xml
+    const manifestEntry = zip.file('AndroidManifest.xml');
+
+    if (!manifestEntry) {
+      throw new Error('AndroidManifest.xml not found inside the APK.');
+    }
+
+    // Try reading as text first
+    let content = await manifestEntry.async('text');
+
+    // If content contains binary/garbled characters (compiled XML),
+    // read as uint8array and attempt binary extraction
+    if (isBinaryXml(content)) {
+      const binaryData = await manifestEntry.async('uint8array');
+      content = extractFromBinaryXml(binaryData);
+    }
+
+    return {
+      manifestContent: content,
+      fileType: 'apk',
+      fileName: fileName
+    };
+  }
+
+  throw new Error('Unsupported file type. Please upload an .apk or .xml file.');
+}
+
+/**
+ * Check if content appears to be binary (compiled) XML
+ */
+function isBinaryXml(content) {
+  // Binary Android XML starts with 0x00 0x00 or 0x03 0x00
+  // or contains many null characters
+  const nullCount = (content.match(/\0/g) || []).length;
+  return nullCount > content.length * 0.1;
+}
+
+/**
+ * Extract readable strings from binary XML
+ * This is a simplified extraction — pulls all readable strings
+ * including permission names and attribute values
+ */
+function extractFromBinaryXml(uint8array) {
+  // Strategy: scan for readable ASCII/UTF-8 strings
+  // Android binary XML stores strings in a string pool
+  // We extract all strings that look like:
+  //   - android.permission.*
+  //   - package names
+  //   - attribute values (true/false, version numbers)
+  //   - tag names (activity, service, receiver, provider)
+
+  const strings = [];
+  let current = '';
+
+  for (let i = 0; i < uint8array.length; i++) {
+    const byte = uint8array[i];
+    // Printable ASCII range
+    if (byte >= 32 && byte <= 126) {
+      current += String.fromCharCode(byte);
+    } else {
+      if (current.length >= 3) {
+        strings.push(current);
+      }
+      current = '';
+    }
+  }
+  if (current.length >= 3) {
+    strings.push(current);
+  }
+
+  // Reconstruct a pseudo-manifest for parsing
+  return strings.join('\n');
+}
+```
+
+---
+
+### 6B. `src/utils/permissionExtractor.js`
+
+**Purpose:** Extract all Android permissions from manifest content string.
+
+```javascript
+/**
+ * @param {string} manifestContent - Raw or pseudo manifest text
+ * @returns {string[]} - Array of full permission strings
+ */
+export function extractPermissions(manifestContent) {
+  const permissions = new Set();
+
+  // Pattern 1: Standard XML uses-permission tag
+  const xmlPattern = /uses-permission\s[^>]*android:name\s*=\s*"([^"]+)"/gi;
+  let match;
+  while ((match = xmlPattern.exec(manifestContent)) !== null) {
+    permissions.add(match[1].trim());
+  }
+
+  // Pattern 2: Direct permission string match (for binary extracted content)
+  const directPattern = /android\.permission\.[A-Z_]+/g;
+  while ((match = directPattern.exec(manifestContent)) !== null) {
+    permissions.add(match[0].trim());
+  }
+
+  // Pattern 3: Custom/third-party permissions
+  const customPattern = /com\.[a-z0-9]+(?:\.[a-z0-9]+)*\.permission\.[A-Z_]+/gi;
+  while ((match = customPattern.exec(manifestContent)) !== null) {
+    permissions.add(match[0].trim());
+  }
+
+  // Pattern 4: Google-specific permissions
+  const googlePattern = /com\.google\.android\.[a-z0-9.]*permission\.[A-Z_]+/gi;
+  while ((match = googlePattern.exec(manifestContent)) !== null) {
+    permissions.add(match[0].trim());
+  }
+
+  return Array.from(permissions).sort();
+}
+```
+
+---
+
+### 6C. `src/utils/riskScorer.js`
+
+**Purpose:** Calculate weighted privacy risk score from permission list.
+
+```javascript
+import PERMISSION_DATABASE from '../data/permissionDatabase';
+
+const WEIGHTS = {
+  high: 20,
+  medium: 10,
+  low: 2,
+  unknown: 5
+};
+
+const GRADES = [
+  { max: 29, grade: 'A', label: 'Low Risk', color: '#27ae60' },
+  { max: 49, grade: 'B', label: 'Moderate', color: '#f1c40f' },
+  { max: 69, grade: 'C', label: 'Elevated', color: '#e67e22' },
+  { max: 84, grade: 'D', label: 'High', color: '#e74c3c' },
+  { max: 100, grade: 'F', label: 'Critical', color: '#c0392b' }
+];
+
+/**
+ * @param {string[]} permissions - Array of permission strings
+ * @returns {{
+ *   score: number,
+ *   normalizedScore: number,
+ *   grade: string,
+ *   label: string,
+ *   color: string,
+ *   breakdown: {high: number, medium: number, low: number, unknown: number},
+ *   explanation: string
+ * }}
+ */
+export function calculateRiskScore(permissions) {
+  const breakdown = { high: 0, medium: 0, low: 0, unknown: 0 };
+
+  permissions.forEach(perm => {
+    const entry = PERMISSION_DATABASE[perm];
+    if (entry) {
+      breakdown[entry.risk] = (breakdown[entry.risk] || 0) + 1;
+    } else {
+      breakdown.unknown += 1;
+    }
+  });
+
+  const rawScore =
+    (breakdown.high * WEIGHTS.high) +
+    (breakdown.medium * WEIGHTS.medium) +
+    (breakdown.low * WEIGHTS.low) +
+    (breakdown.unknown * WEIGHTS.unknown);
+
+  const normalizedScore = Math.min(100, rawScore);
+
+  // Determine grade
+  let gradeInfo = GRADES[GRADES.length - 1]; // default to worst
+  for (const g of GRADES) {
+    if (normalizedScore <= g.max) {
+      gradeInfo = g;
+      break;
+    }
+  }
+
+  // Generate explanation
+  let explanation = '';
+  if (normalizedScore <= 29) {
+    explanation = 'This app requests minimal permissions with low privacy impact.';
+  } else if (normalizedScore <= 49) {
+    explanation = 'This app requests some permissions that could affect privacy. Review the details below.';
+  } else if (normalizedScore <= 69) {
+    explanation = 'This app requests several sensitive permissions. Consider whether all are necessary.';
+  } else if (normalizedScore <= 84) {
+    explanation = 'This app requests multiple high-risk permissions that significantly impact user privacy.';
+  } else {
+    explanation = 'This app requests an alarming number of sensitive permissions. Extreme caution is advised.';
+  }
+
+  return {
+    score: rawScore,
+    normalizedScore,
+    grade: gradeInfo.grade,
+    label: gradeInfo.label,
+    color: gradeInfo.color,
+    breakdown,
+    explanation
+  };
+}
+```
+
+---
+
+### 6D. `src/utils/comboDetector.js`
+
+**Purpose:** Detect suspicious permission combinations.
+
+```javascript
+import SUSPICIOUS_COMBOS from '../data/suspiciousCombos';
+
+/**
+ * @param {string[]} permissions - Array of permission strings
+ * @returns {Array<{id, combo, risk, title, reason, matched}>}
+ */
+export function detectSuspiciousCombos(permissions) {
+  const permSet = new Set(permissions);
+  const detected = [];
+
+  SUSPICIOUS_COMBOS.forEach(rule => {
+    const allPresent = rule.combo.every(perm => permSet.has(perm));
+    if (allPresent) {
+      detected.push({
+        ...rule,
+        matched: rule.combo.filter(p => permSet.has(p))
+      });
+    }
+  });
+
+  // Sort by severity: critical first, then high
+  const severityOrder = { critical: 0, high: 1, medium: 2, low: 3 };
+  detected.sort((a, b) =>
+    (severityOrder[a.risk] || 99) - (severityOrder[b.risk] || 99)
+  );
+
+  return detected;
+}
+```
+
+---
+
+### 6E. `src/utils/manifestAnalyzer.js`
+
+**Purpose:** Extract SDK versions, debug flag, backup flag from manifest.
+
+```javascript
+/**
+ * @param {string} manifestContent
+ * @returns {{
+ *   minSdkVersion: number|null,
+ *   targetSdkVersion: number|null,
+ *   isDebuggable: boolean,
+ *   allowsBackup: boolean,
+ *   warnings: Array<{type: string, severity: string, message: string}>
+ * }}
+ */
+export function analyzeManifest(manifestContent) {
+  const result = {
+    minSdkVersion: null,
+    targetSdkVersion: null,
+    isDebuggable: false,
+    allowsBackup: false,
+    warnings: []
+  };
+
+  // Extract minSdkVersion
+  const minSdkMatch = manifestContent.match(
+    /android:minSdkVersion\s*=\s*"(\d+)"/i
+  ) || manifestContent.match(
+    /minSdkVersion\s*[:=]\s*(\d+)/i
+  );
+  if (minSdkMatch) {
+    result.minSdkVersion = parseInt(minSdkMatch[1], 10);
+  }
+
+  // Extract targetSdkVersion
+  const targetSdkMatch = manifestContent.match(
+    /android:targetSdkVersion\s*=\s*"(\d+)"/i
+  ) || manifestContent.match(
+    /targetSdkVersion\s*[:=]\s*(\d+)/i
+  );
+  if (targetSdkMatch) {
+    result.targetSdkVersion = parseInt(targetSdkMatch[1], 10);
+  }
+
+  // Check debuggable
+  const debugMatch = manifestContent.match(
+    /android:debuggable\s*=\s*"(true|false)"/i
+  );
+  if (debugMatch) {
+    result.isDebuggable = debugMatch[1].toLowerCase() === 'true';
+  }
+
+  // Also check for just the string in binary manifests
+  if (!debugMatch && /debuggable.*true/i.test(manifestContent)) {
+    result.isDebuggable = true;
+  }
+
+  // Check allowBackup
+  const backupMatch = manifestContent.match(
+    /android:allowBackup\s*=\s*"(true|false)"/i
+  );
+  if (backupMatch) {
+    result.allowsBackup = backupMatch[1].toLowerCase() === 'true';
+  }
+  // Default in Android is true if not specified
+  if (!backupMatch) {
+    result.allowsBackup = true; // Android default
+  }
+
+  // Generate warnings
+  if (result.targetSdkVersion !== null && result.targetSdkVersion < 23) {
+    result.warnings.push({
+      type: 'outdated-target-sdk',
+      severity: 'high',
+      message: `Target SDK version ${result.targetSdkVersion} uses the legacy permission model. All permissions are granted at install time without user consent. Apps should target SDK 23+.`
+    });
+  }
+
+  if (result.targetSdkVersion !== null && result.targetSdkVersion < 30) {
+    result.warnings.push({
+      type: 'pre-scoped-storage',
+      severity: 'medium',
+      message: `Target SDK version ${result.targetSdkVersion} does not enforce scoped storage restrictions. The app may have broad file access.`
+    });
+  }
+
+  if (result.minSdkVersion !== null && result.minSdkVersion < 21) {
+    result.warnings.push({
+      type: 'old-min-sdk',
+      severity: 'medium',
+      message: `Minimum SDK version ${result.minSdkVersion} supports very old Android versions (pre-Lollipop) that lack modern security features.`
+    });
+  }
+
+  if (result.isDebuggable) {
+    result.warnings.push({
+      type: 'debuggable',
+      severity: 'critical',
+      message: 'Debuggable flag is enabled. This should NEVER be enabled in production builds. Attackers can attach debuggers and inspect application memory.'
+    });
+  }
+
+  if (result.allowsBackup) {
+    result.warnings.push({
+      type: 'backup-enabled',
+      severity: 'medium',
+      message: 'App data backup is allowed. App data can be extracted via ADB backup, potentially exposing sensitive information.'
+    });
+  }
+
+  return result;
+}
+```
+
+---
+
+### 6F. `src/utils/componentAnalyzer.js`
+
+**Purpose:** Detect exported components (activities, services, receivers, providers).
+
+```javascript
+/**
+ * @param {string} manifestContent
+ * @returns {{
+ *   exportedActivities: string[],
+ *   exportedServices: string[],
+ *   exportedReceivers: string[],
+ *   exportedProviders: string[],
+ *   totalExported: number,
+ *   unprotectedCount: number,
+ *   components: Array<{type, name, isExported, hasPermission}>
+ * }}
+ */
+export function analyzeComponents(manifestContent) {
+  const result = {
+    exportedActivities: [],
+    exportedServices: [],
+    exportedReceivers: [],
+    exportedProviders: [],
+    totalExported: 0,
+    unprotectedCount: 0,
+    components: []
+  };
+
+  const componentTypes = ['activity', 'service', 'receiver', 'provider'];
+
+  componentTypes.forEach(type => {
+    // Match component blocks
+    // This regex captures individual component declarations
+    const pattern = new RegExp(
+      `<${type}\\s([^>]*(?:>(?:(?!<\\/${type}).)*<\\/${type}>|[^>]*\\/>))`,
+      'gis'
+    );
+
+    let match;
+    while ((match = pattern.exec(manifestContent)) !== null) {
+      const block = match[1] || match[0];
+
+      // Check if exported="true"
+      const exportedMatch = block.match(/android:exported\s*=\s*"(true|false)"/i);
+      const isExported = exportedMatch ? exportedMatch[1].toLowerCase() === 'true' : false;
+
+      // Also consider components with intent-filters as implicitly exported
+      // (for Android 12+ / SDK 31+, they MUST declare exported explicitly)
+      const hasIntentFilter = /<intent-filter/i.test(block);
+      const effectivelyExported = isExported || (hasIntentFilter && !exportedMatch);
+
+      // Extract component name
+      const nameMatch = block.match(/android:name\s*=\s*"([^"]+)"/i);
+      const componentName = nameMatch ? nameMatch[1] : 'Unknown';
+
+      // Check if protected by permission
+      const permMatch = block.match(/android:permission\s*=\s*"([^"]+)"/i);
+      const hasPermission = !!permMatch;
+
+      if (effectivelyExported) {
+        const key = `exported${type.charAt(0).toUpperCase() + type.slice(1)}${type === 'activity' ? '' : ''}`;
+        // Push to appropriate array
+        switch (type) {
+          case 'activity':
+            result.exportedActivities.push(componentName);
+            break;
+          case 'service':
+            result.exportedServices.push(componentName);
+            break;
+          case 'receiver':
+            result.exportedReceivers.push(componentName);
+            break;
+          case 'provider':
+            result.exportedProviders.push(componentName);
+            break;
+        }
+
+        result.totalExported++;
+        if (!hasPermission) {
+          result.unprotectedCount++;
+        }
+      }
+
+      result.components.push({
+        type,
+        name: componentName,
+        isExported: effectivelyExported,
+        hasPermission
+      });
+    }
+  });
+
+  // Fallback: simpler search for binary-extracted content
+  if (result.components.length === 0) {
+    // Look for exported="true" strings
+    const simpleExportedPattern = /android:exported\s*=\s*"true"/gi;
+    let simpleMatch;
+    let count = 0;
+    while ((simpleMatch = simpleExportedPattern.exec(manifestContent)) !== null) {
+      count++;
+    }
+    result.totalExported = count;
+    result.unprotectedCount = count; // assume unprotected in binary mode
+  }
+
+  return result;
+}
+```
+
+---
+
+### 6G. `src/utils/metadataExtractor.js`
+
+**Purpose:** Extract app metadata (package name, version, label).
+
+```javascript
+/**
+ * @param {string} manifestContent
+ * @param {string} fileName
+ * @returns {{
+ *   packageName: string|null,
+ *   versionCode: string|null,
+ *   versionName: string|null,
+ *   appLabel: string|null,
+ *   fileName: string
+ * }}
+ */
+export function extractMetadata(manifestContent, fileName) {
+  const metadata = {
+    packageName: null,
+    versionCode: null,
+    versionName: null,
+    appLabel: null,
+    fileName: fileName || 'Unknown'
+  };
+
+  // Package name
+  const packageMatch = manifestContent.match(
+    /package\s*=\s*"([^"]+)"/i
+  );
+  if (packageMatch) {
+    metadata.packageName = packageMatch[1];
+  }
+
+  // Version code
+  const versionCodeMatch = manifestContent.match(
+    /android:versionCode\s*=\s*"([^"]+)"/i
+  ) || manifestContent.match(
+    /versionCode\s*[:=]\s*['"]?(\d+)/i
+  );
+  if (versionCodeMatch) {
+    metadata.versionCode = versionCodeMatch[1];
+  }
+
+  // Version name
+  const versionNameMatch = manifestContent.match(
+    /android:versionName\s*=\s*"([^"]+)"/i
+  ) || manifestContent.match(
+    /versionName\s*[:=]\s*['"]?([^'">\s]+)/i
+  );
+  if (versionNameMatch) {
+    metadata.versionName = versionNameMatch[1];
+  }
+
+  // App label
+  const labelMatch = manifestContent.match(
+    /android:label\s*=\s*"([^"@]+)"/i
+  );
+  if (labelMatch) {
+    metadata.appLabel = labelMatch[1];
+  }
+
+  return metadata;
+}
+```
+
+---
+
+### 6H. `src/utils/domainCategorizer.js`
+
+**Purpose:** Group permissions by data domain category.
+
+```javascript
+import PERMISSION_DATABASE from '../data/permissionDatabase';
+import DOMAIN_CATEGORIES from '../data/domainCategories';
+
+/**
+ * @param {string[]} permissions
+ * @returns {Object<string, {permissions: string[], count: number, icon: string, color: string}>}
+ */
+export function categorizeByDomain(permissions) {
+  const categories = {};
+
+  // Initialize all known categories with empty arrays
+  Object.keys(DOMAIN_CATEGORIES).forEach(cat => {
+    categories[cat] = {
+      permissions: [],
+      count: 0,
+      icon: DOMAIN_CATEGORIES[cat].icon,
+      color: DOMAIN_CATEGORIES[cat].color,
+      description: DOMAIN_CATEGORIES[cat].description
+    };
+  });
+
+  permissions.forEach(perm => {
+    const entry = PERMISSION_DATABASE[perm];
+    const category = entry ? entry.category : 'Unknown';
+
+    if (!categories[category]) {
+      categories[category] = {
+        permissions: [],
+        count: 0,
+        icon: '❓',
+        color: '#95a5a6',
+        description: 'Uncategorized permissions.'
+      };
+    }
+
+    categories[category].permissions.push(perm);
+    categories[category].count++;
+  });
+
+  // Remove empty categories
+  const filtered = {};
+  Object.entries(categories).forEach(([key, val]) => {
+    if (val.count > 0) {
+      filtered[key] = val;
+    }
+  });
+
+  return filtered;
+}
+```
+
+---
+
+### 6I. `src/utils/manifestParser.js`
+
+**Orchestrator:** Ties all utilities together. Single entry point for analysis.
+
+```javascript
+import { handleFile } from './fileHandler';
+import { extractPermissions } from './permissionExtractor';
+import { calculateRiskScore } from './riskScorer';
+import { detectSuspiciousCombos } from './comboDetector';
+import { analyzeManifest } from './manifestAnalyzer';
+import { analyzeComponents } from './componentAnalyzer';
+import { extractMetadata } from './metadataExtractor';
+import { categorizeByDomain } from './domainCategorizer';
+import PERMISSION_DATABASE from '../data/permissionDatabase';
+
+/**
+ * Master analysis function
+ * @param {File} file
+ * @returns {Promise<AnalysisResult>}
+ */
+export async function analyzeFile(file) {
+  // Step 1: Extract manifest content
+  const { manifestContent, fileType, fileName } = await handleFile(file);
+
+  // Step 2: Extract permissions
+  const permissions = extractPermissions(manifestContent);
+
+  // Step 3: Build permission details
+  const permissionDetails = permissions.map(perm => {
+    const entry = PERMISSION_DATABASE[perm] || {
+      risk: 'unknown',
+      description: 'This permission is not in our database. Review manually.',
+      category: 'Unknown'
+    };
+    return {
+      name: perm,
+      shortName: perm.split('.').pop(),
+      ...entry
+    };
+  });
+
+  // Step 4: Calculate risk score
+  const riskScore = calculateRiskScore(permissions);
+
+  // Step 5: Detect suspicious combos
+  const suspiciousCombos = detectSuspiciousCombos(permissions);
+
+  // Step 6: Analyze manifest flags
+  const manifestAnalysis = analyzeManifest(manifestContent);
+
+  // Step 7: Analyze components
+  const componentAnalysis = analyzeComponents(manifestContent);
+
+  // Step 8: Extract metadata
+  const metadata = extractMetadata(manifestContent, fileName);
+
+  // Step 9: Categorize by domain
+  const domainProfile = categorizeByDomain(permissions);
+
+  return {
+    success: true,
+    fileName,
+    fileType,
+    timestamp: new Date().toISOString(),
+    metadata,
+    permissions: permissionDetails,
+    totalPermissions: permissions.length,
+    riskScore,
+    suspiciousCombos,
+    manifestAnalysis,
+    componentAnalysis,
+    domainProfile,
+    rawManifest: manifestContent // for debug/display if needed
+  };
+}
+```
+
+---
+
+## 7. Custom Hook
+
+### `src/hooks/useAnalysis.js`
+
+```javascript
+import { useState, useCallback } from 'react';
+import { analyzeFile } from '../utils/manifestParser';
+
+export function useAnalysis() {
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const analyze = useCallback(async (file) => {
+    setLoading(true);
+    setError(null);
+    setResult(null);
+
+    try {
+      const analysisResult = await analyzeFile(file);
+      setResult(analysisResult);
+    } catch (err) {
+      setError(err.message || 'Analysis failed. Please try a valid file.');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const reset = useCallback(() => {
+    setResult(null);
+    setError(null);
+    setLoading(false);
+  }, []);
+
+  return { result, loading, error, analyze, reset };
+}
+```
+
+---
+
+## 8. Component Specifications
+
+---
+
+### 8A. `App.js` — Root Component
+
+```
+STRUCTURE:
+  <div className="app">
+    <Header />
+    <main>
+      {!result && <FileUpload onFileSelect={analyze} loading={loading} error={error} />}
+      {result && (
+        <>
+          <button onClick={reset}>Scan Another File</button>
+          <AppOverview metadata={result.metadata} fileType={result.fileType} />
+          <RiskScore data={result.riskScore} totalPermissions={result.totalPermissions} />
+          <SuspiciousCombos combos={result.suspiciousCombos} />
+          <ManifestWarnings analysis={result.manifestAnalysis} />
+          <ComponentExposure data={result.componentAnalysis} />
+          <RiskCharts riskBreakdown={result.riskScore.breakdown} domainProfile={result.domainProfile} />
+          <SearchFilter permissions={result.permissions}>
+            {(filtered) => <PermissionBreakdown permissions={filtered} />}
+          </SearchFilter>
+          <DataExposureProfile domains={result.domainProfile} />
+          <EducationalInsights />
+        </>
+      )}
+    </main>
+    <PrivacyBadge />
+    <Footer />
+  </div>
+```
+
+---
+
+### 8B. `Header.jsx`
+
+```
+DISPLAYS:
+  - App name: "Appranium"
+  - Tagline: "Client-Side Android Privacy Analyzer"
+  - Shield icon or logo
+  - Subtle gradient or dark themed header
+
+STYLE:
+  - Dark background (#1a1a2e or similar dark blue/purple)
+  - White text
+  - Centered layout
+  - No navigation links needed (single page)
+```
+
+---
+
+### 8C. `FileUpload.jsx`
+
+```
+PROPS:
+  - onFileSelect: function(File)
+  - loading: boolean
+  - error: string|null
+
+DISPLAYS:
+  - Drag-and-drop zone (dashed border, icon)
+  - "Drop your .apk or AndroidManifest.xml here"
+  - "or click to browse"
+  - Hidden <input type="file" accept=".apk,.xml" />
+  - Loading spinner when loading=true
+  - Error message in red when error exists
+
+BEHAVIOR:
+  - On file drop or selection:
+    - Validate extension is .apk or .xml
+    - Call onFileSelect(file)
+  - Drag states: highlight border on dragover
+
+STYLE:
+  - Large centered upload area
+  - Dashed border, rounded corners
+  - Icon: upload cloud or shield
+  - Hover: border color change
+  - Active drag: background color change
+```
+
+---
+
+### 8D. `AppOverview.jsx`
+
+```
+PROPS:
+  - metadata: { packageName, versionCode, versionName, appLabel, fileName }
+  - fileType: string ('apk' | 'xml')
+
+DISPLAYS:
+  Card with title "📦 Application Overview"
+  Table or grid:
+    - File Name: metadata.fileName
+    - File Type: fileType (with badge: APK or XML)
+    - Package Name: metadata.packageName || 'Not detected'
+    - Version: metadata.versionName || 'N/A' (versionCode in parentheses)
+    - App Label: metadata.appLabel || 'Not detected'
+
+STYLE:
+  - Clean card with subtle shadow
+  - Grid layout: label on left, value on right
+  - Monospace font for package name
+```
+
+---
+
+### 8E. `RiskScore.jsx` — THE HERO COMPONENT
+
+```
+PROPS:
+  - data: { normalizedScore, grade, label, color, breakdown, explanation }
+  - totalPermissions: number
+
+DISPLAYS:
+  1. CIRCULAR GAUGE (GaugeCircle component):
+     - SVG circle with stroke-dasharray animation
+     - Score number in center (e.g., "72")
+     - "/100" below the number
+     - Circle color matches data.color
+     - Animated fill on mount
+
+  2. GRADE BADGE:
+     - Large letter (data.grade) in colored circle
+     - Label below (data.label)
+
+  3. SUMMARY STATS:
+     - Total Permissions: totalPermissions
+     - High Risk: breakdown.high (red)
+     - Medium Risk: breakdown.medium (orange)
+     - Low Risk: breakdown.low (green)
+     - Unknown: breakdown.unknown (gray)
+
+  4. EXPLANATION TEXT:
+     - data.explanation in a callout box
+
+STYLE:
+  - Prominent card, slightly larger than others
+  - Gauge on left, stats on right (desktop)
+  - Stack vertically on mobile
+  - Grade badge prominently displayed
+  - Color-coded everything
+```
+
+---
+
+### 8F. `GaugeCircle.jsx` (Common Component)
+
+```
+PROPS:
+  - value: number (0-100)
+  - color: string
+  - size: number (default 200)
+  - strokeWidth: number (default 15)
+
+RENDERS:
+  SVG with:
+    - Background circle (light gray)
+    - Foreground circle (colored, stroke-dasharray based on value)
+    - Centered text showing value
+    - CSS animation: dasharray from 0 to calculated value on mount
+
+IMPLEMENTATION NOTES:
+  - circumference = 2 * Math.PI * radius
+  - dashArray = (value / 100) * circumference
+  - dashOffset = circumference - dashArray
+  - Use CSS transition on stroke-dashoffset
+  - viewBox should be square
+```
+
+---
+
+### 8G. `SuspiciousCombos.jsx`
+
+```
+PROPS:
+  - combos: Array<{id, combo, risk, title, reason}>
+
+DISPLAYS:
+  Section title: "⚠️ Suspicious Permission Combinations"
+
+  IF combos.length === 0:
+    Green success card:
+    "✅ No high-risk permission combinations detected."
+
+  IF combos.length > 0:
+    For each combo:
+      - Card with colored left border (critical=red, high=orange)
+      - Title (combo.title)
+      - Risk badge (combo.risk)
+      - Reason text (combo.reason)
+      - List of involved permissions (combo.combo) as small badges
+
+STYLE:
+  - Each combo in its own card
+  - Left border color indicates severity
+  - Badges inline with permission names
+  - Critical: red scheme
+  - High: orange scheme
+```
+
+---
+
+### 8H. `ManifestWarnings.jsx`
+
+```
+PROPS:
+  - analysis: { minSdkVersion, targetSdkVersion, isDebuggable, allowsBackup, warnings }
+
+DISPLAYS:
+  Section title: "🛡️ Manifest Security Analysis"
+
+  Info row:
+    - Min SDK: analysis.minSdkVersion || 'Not detected'
+    - Target SDK: analysis.targetSdkVersion || 'Not detected'
+    - Debuggable: Yes/No (with icon)
+    - Allow Backup: Yes/No (with icon)
+
+  IF warnings.length > 0:
+    Warning cards for each warning:
+      - Severity badge (critical/high/medium)
+      - Warning message
+      - Icon based on severity
+
+  IF warnings.length === 0:
+    "✅ No manifest security issues detected."
+
+STYLE:
+  - SDK values in info boxes
+  - Warning cards with left border color
+  - Critical: red background tint
+  - Medium: yellow background tint
+```
+
+---
+
+### 8I. `ComponentExposure.jsx`
+
+```
+PROPS:
+  - data: { exportedActivities, exportedServices, exportedReceivers,
+            exportedProviders, totalExported, unprotectedCount, components }
+
+DISPLAYS:
+  Section title: "🔓 Component Exposure Summary"
+
+  Stats grid:
+    - Total Exported: data.totalExported
+    - Unprotected: data.unprotectedCount
+    - Activities: data.exportedActivities.length
+    - Services: data.exportedServices.length
+    - Receivers: data.exportedReceivers.length
+    - Providers: data.exportedProviders.length
+
+  IF totalExported > 0:
+    Collapsible list of exported component names by type
+    Warning: "⚠️ Exported components can be accessed by other apps on the device."
+
+  IF unprotectedCount > 0:
+    Extra warning: "🔴 {count} exported components have no permission protection."
+
+  IF totalExported === 0:
+    "✅ No exported components detected."
+
+STYLE:
+  - Stats in a grid (2x3 or 3x2)
+  - Collapsible sections for detailed lists
+  - Component names in monospace
+```
+
+---
+
+### 8J. `RiskCharts.jsx`
+
+```
+PROPS:
+  - riskBreakdown: { high, medium, low, unknown }
+  - domainProfile: Object<category, {count, color}>
+
+DISPLAYS:
+  Section title: "📊 Risk Distribution"
+
+  TWO CHARTS side by side (stack on mobile):
+
+  1. PIE CHART (Risk Distribution):
+     Data:
+       - High Risk: breakdown.high (color: #e74c3c)
+       - Medium Risk: breakdown.medium (color: #f39c12)
+       - Low Risk: breakdown.low (color: #27ae60)
+       - Unknown: breakdown.unknown (color: #95a5a6)
+     Only include slices with count > 0
+     Show labels and percentages
+
+  2. BAR CHART (Data Domain Distribution):
+     Data: Object.entries(domainProfile) mapped to:
+       - name: category name
+       - count: category.count
+       - fill: category.color
+     Horizontal or vertical bars
+     Show count labels
+
+LIBRARY: Recharts
+  Import: PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer
+
+STYLE:
+  - Charts in a flex container
+  - Each chart in its own card
+  - ResponsiveContainer with height ~300px
+  - Custom tooltip styling
+```
+
+---
+
+### 8K. `SearchFilter.jsx`
+
+```
+PROPS:
+  - permissions: Array<{name, shortName, risk, description, category}>
+  - children: function(filteredPermissions) => ReactNode
+
+STATE:
+  - searchQuery: string
+  - riskFilter: 'all' | 'high' | 'medium' | 'low' | 'unknown'
+  - sortBy: 'risk' | 'name' | 'category'
+
+DISPLAYS:
+  - Search input: "Search permissions..."
+  - Risk filter dropdown/buttons: All | High | Medium | Low | Unknown
+  - Sort dropdown: By Risk | Alphabetical | By Category
+  - Count display: "Showing X of Y permissions"
+
+BEHAVIOR:
+  - Filter permissions by:
+    1. searchQuery matches name (case-insensitive)
+    2. riskFilter matches risk level
+  - Sort by selected criteria:
+    - risk: high → medium → low → unknown
+    - name: alphabetical by shortName
+    - category: alphabetical by category, then name
+  - Pass filtered array to children render prop
+
+STYLE:
+  - Horizontal bar with search + filters
+  - Responsive: stack vertically on mobile
+  - Active filter highlighted
+```
+
+---
+
+### 8L. `PermissionBreakdown.jsx`
+
+```
+PROPS:
+  - permissions: Array<{name, shortName, risk, description, category}>
+
+DISPLAYS:
+  Section title: "🔍 Permission Breakdown"
+
+  For each permission:
+    - Card or row with:
+      - Permission short name (bold, e.g., "CAMERA")
+      - Full name (small, gray, e.g., "android.permission.CAMERA")
+      - Risk badge (colored: High=red, Medium=orange, Low=green, Unknown=gray)
+      - Category badge (with emoji icon from DOMAIN_CATEGORIES)
+      - Description text
+    - Cards colored/tinted by risk level
+
+  IF permissions.length === 0:
+    "No permissions match your current filters."
+
+STYLE:
+  - Grid or list layout
+  - Each permission in a card with subtle left border color
+  - Risk badge: pill-shaped, colored background
+  - Category badge: smaller, outlined
+  - Description in lighter text below name
+```
+
+---
+
+### 8M. `DataExposureProfile.jsx`
+
+```
+PROPS:
+  - domains: Object<categoryName, {permissions, count, icon, color, description}>
+
+DISPLAYS:
+  Section title: "🎯 Data Exposure Profile"
+
+  For each domain category (sorted by count descending):
+    - Row/card with:
+      - Category icon + name
+      - Permission count
+      - Small progress bar or count indicator
+      - Expandable: list of actual permissions in that category
+
+STYLE:
+  - Clean list with icons
+  - Count displayed prominently
+  - Expandable sections for detail
+  - Color-coded by category
+```
+
+---
+
+### 8N. `EducationalInsights.jsx`
+
+```
+PROPS: none (uses static data)
+
+DISPLAYS:
+  Section title: "📚 Security Knowledge Base"
+
+  For each item in EDUCATIONAL_CONTENT:
+    - Collapsible/accordion panel
+    - Title clickable to expand
+    - Content text revealed on expand
+    - Only one open at a time (or all can be open)
+
+STYLE:
+  - Accordion UI pattern
+  - Subtle background differentiation
+  - Expand/collapse icon (chevron)
+  - Educational blue/teal accent color
+```
+
+---
+
+### 8O. `PrivacyBadge.jsx`
+
+```
+DISPLAYS:
+  Fixed or prominent badge area:
+    - 🔒 "100% Local Processing"
+    - "No files are uploaded to any server."
+    - "No API calls are made with your data."
+    - "All analysis runs in-memory in your browser."
+
+STYLE:
+  - Green-tinted card or banner
+  - Shield or lock icon
+  - Can be placed above footer or as floating badge
+  - Always visible in results view
+```
+
+---
+
+### 8P. `Footer.jsx`
+
+```
+DISPLAYS:
+  - "Appranium — Client-Side Android Privacy Analyzer"
+  - "Built for privacy-conscious users and security researchers."
+  - Version: "v2.0"
+  - "No data leaves your browser. Ever."
+
+STYLE:
+  - Dark background matching header
+  - Small text
+  - Centered
+  - Subtle separator line above
+```
+
+---
+
+### 8Q. Common Components
+
+#### `Badge.jsx`
+```
+PROPS:
+  - text: string
+  - color: string (background)
+  - textColor: string (default white)
+  - size: 'small' | 'medium' (default medium)
+
+RENDERS:
+  <span> with pill shape, colored background, white text
+```
+
+#### `Card.jsx`
+```
+PROPS:
+  - title: string (optional)
+  - icon: string (optional, emoji)
+  - children: ReactNode
+  - borderColor: string (optional, for left accent border)
+  - className: string (optional)
+
+RENDERS:
+  <div> with:
+    - Shadow, rounded corners, padding
+    - Optional colored left border (4px)
+    - Title row with icon + title if provided
+    - Children content area
+```
+
+#### `Collapsible.jsx`
+```
+PROPS:
+  - title: string
+  - defaultOpen: boolean (default false)
+  - children: ReactNode
+
+STATE:
+  - isOpen: boolean
+
+RENDERS:
+  - Clickable title row with chevron icon
+  - Animated expand/collapse of children
+  - CSS transition on max-height
+```
+
+---
+
+## 9. Styling Specifications
+
+### Color Palette
+
+```css
+/* Primary Theme (Dark Professional) */
+--bg-primary: #0f0f1a;
+--bg-secondary: #1a1a2e;
+--bg-card: #16213e;
+--bg-card-hover: #1a2540;
+--text-primary: #e0e0e0;
+--text-secondary: #a0a0b0;
+--accent-primary: #6c63ff;
+--accent-secondary: #48dbfb;
+
+/* Risk Colors */
+--risk-critical: #ff4757;
+--risk-high: #e74c3c;
+--risk-medium: #f39c12;
+--risk-low: #27ae60;
+--risk-unknown: #95a5a6;
+
+/* Grade Colors */
+--grade-a: #27ae60;
+--grade-b: #f1c40f;
+--grade-c: #e67e22;
+--grade-d: #e74c3c;
+--grade-f: #c0392b;
+
+/* UI */
+--border-color: #2d2d44;
+--shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+--radius: 12px;
+--radius-small: 8px;
+```
+
+### Typography
+
+```css
+/* Font Stack */
+font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+/* Sizes */
+--font-xs: 0.75rem;
+--font-sm: 0.875rem;
+--font-base: 1rem;
+--font-lg: 1.25rem;
+--font-xl: 1.5rem;
+--font-2xl: 2rem;
+--font-3xl: 2.5rem;
+
+/* Monospace for code/package names */
+font-family: 'Fira Code', 'Courier New', monospace;
+```
+
+### Responsive Breakpoints
+
+```css
+/* Mobile first */
+@media (min-width: 768px)  { /* Tablet */ }
+@media (min-width: 1024px) { /* Desktop */ }
+@media (min-width: 1280px) { /* Large Desktop */ }
+```
+
+### Global Styles (`App.css`)
+
+```css
+/* CSS Reset basics */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+}
+/* Import Inter font from Google Fonts in index.html */
+/* <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"> */
+
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Card base */
+.card {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border-color);
+}
+
+/* Section titles */
+.section-title {
+  font-size: var(--font-xl);
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--text-primary);
+}
+
+/* Badge base */
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: var(--font-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.badge-high, .badge-critical { background: var(--risk-high); color: white; }
+.badge-medium { background: var(--risk-medium); color: white; }
+.badge-low { background: var(--risk-low); color: white; }
+.badge-unknown { background: var(--risk-unknown); color: white; }
+```
+
+---
+
+## 10. Page Layout Flow (Visual Wireframe)
+
+```
+┌─────────────────────────────────────┐
+│            HEADER                    │
+│     🛡️ Appranium                    │
+│  Client-Side Android Privacy        │
+│         Analyzer                     │
+├─────────────────────────────────────┤
+│                                     │
+│    ┌───────────────────────┐        │
+│    │                       │        │
+│    │   DRAG & DROP ZONE    │        │
+│    │   Upload .apk or .xml │        │
+│    │                       │        │
+│    └───────────────────────┘        │
+│                                     │
+│    ──── After file analysis ────    │
+│                                     │
+│  ┌─────────────────────────────┐    │
+│  │ 📦 Application Overview     │    │
+│  │ Package: com.example.app    │    │
+│  │ Version: 1.0.0              │    │
+│  └─────────────────────────────┘    │
+│                                     │
+│  ┌─────────────────────────────┐    │
+│  │ 🎯 Privacy Risk Score       │    │
+│  │                             │    │
+│  │  ┌──────┐  Score: 72/100   │    │
+│  │  │  72  │  Grade: D        │    │
+│  │  │  /100│  HIGH RISK       │    │
+│  │  └──────┘                   │    │
+│  │  High: 5  Med: 3  Low: 2   │    │
+│  │  "This app requests..."     │    │
+│  └─────────────────────────────┘    │
+│                                     │
+│  ┌─────────────────────────────┐    │
+│  │ ⚠️ Suspicious Combinations  │    │
+│  │ ┌─ OTP Theft ──────────┐   │    │
+│  │ │ READ_SMS + INTERNET  │   │    │
+│  │ │ Can intercept OTPs...│   │    │
+│  │ └──────────────────────┘   │    │
+│  └─────────────────────────────┘    │
+│                                     │
+│  ┌─────────────────────────────┐    │
+│  │ 🛡️ Manifest Warnings       │    │
+│  │ Min SDK: 21  Target: 30    │    │
+│  │ ⚠️ Backup enabled          │    │
+│  └─────────────────────────────┘    │
+│                                     │
+│  ┌─────────────────────────────┐    │
+│  │ 🔓 Component Exposure       │    │
+│  │ Exported: 3  Unprotected: 2│    │
+│  └─────────────────────────────┘    │
+│                                     │
+│  ┌──────────┐  ┌──────────────┐    │
+│  │ PIE      │  │ BAR CHART    │    │
+│  │ CHART    │  │ (Domains)    │    │
+│  │ (Risk)   │  │              │    │
+│  └──────────┘  └──────────────┘    │
+│                                     │
+│  ┌─────────────────────────────┐    │
+│  │ 🔍 [Search...] [Filter ▼]  │    │
+│  │ Showing 12 of 15 permissions│    │
+│  ├─────────────────────────────┤    │
+│  │ CAMERA          HIGH 🔴    │    │
+│  │ android.permission.CAMERA   │    │
+│  │ Access device camera...     │    │
+│  ├─────────────────────────────┤    │
+│  │ INTERNET        MEDIUM 🟡  │    │
+│  │ android.permission.INTERNET │    │
+│  │ Full network access...      │    │
+│  └─────────────────────────────┘    │
+│                                     │
+│  ┌─────────────────────────────┐    │
+│  │ 🎯 Data Exposure Profile    │    │
+│  │ 📍 Location: 2 permissions │    │
+│  │ 📞 Communication: 3        │    │
+│  │ ⚙️ Device Control: 4       │    │
+│  └─────────────────────────────┘    │
+│                                     │
+│  ┌─────────────────────────────┐    │
+│  │ 📚 Security Knowledge Base  │    │
+│  │ ▶ Runtime Permissions       │    │
+│  │ ▶ Scoped Storage            │    │
+│  │ ▶ Background Location       │    │
+│  └─────────────────────────────┘    │
+│                                     │
+│  ┌─────────────────────────────┐    │
+│  │ 🔒 100% Local Processing    │    │
+│  │ No data leaves your browser │    │
+│  └─────────────────────────────┘    │
+│                                     │
+├─────────────────────────────────────┤
+│            FOOTER                    │
+│   Appranium v2.0 | No data leaves   │
+│        your browser. Ever.           │
+└─────────────────────────────────────┘
+```
+
+---
+
+## 11. Analysis Result Data Shape (TypeScript-like Reference)
+
+```typescript
+interface AnalysisResult {
+  success: boolean;
+  fileName: string;
+  fileType: 'apk' | 'xml';
+  timestamp: string;
+
+  metadata: {
+    packageName: string | null;
+    versionCode: string | null;
+    versionName: string | null;
+    appLabel: string | null;
+    fileName: string;
+  };
+
+  permissions: Array<{
+    name: string;           // full: android.permission.CAMERA
+    shortName: string;      // short: CAMERA
+    risk: 'high' | 'medium' | 'low' | 'unknown';
+    description: string;
+    category: string;
+  }>;
+
+  totalPermissions: number;
+
+  riskScore: {
+    score: number;          // raw (can exceed 100)
+    normalizedScore: number; // capped at 100
+    grade: 'A' | 'B' | 'C' | 'D' | 'F';
+    label: string;
+    color: string;
+    breakdown: {
+      high: number;
+      medium: number;
+      low: number;
+      unknown: number;
+    };
+    explanation: string;
+  };
+
+  suspiciousCombos: Array<{
+    id: string;
+    combo: string[];
+    risk: 'critical' | 'high';
+    title: string;
+    reason: string;
+    matched: string[];
+  }>;
+
+  manifestAnalysis: {
+    minSdkVersion: number | null;
+    targetSdkVersion: number | null;
+    isDebuggable: boolean;
+    allowsBackup: boolean;
+    warnings: Array<{
+      type: string;
+      severity: 'critical' | 'high' | 'medium';
+      message: string;
+    }>;
+  };
+
+  componentAnalysis: {
+    exportedActivities: string[];
+    exportedServices: string[];
+    exportedReceivers: string[];
+    exportedProviders: string[];
+    totalExported: number;
+    unprotectedCount: number;
+    components: Array<{
+      type: string;
+      name: string;
+      isExported: boolean;
+      hasPermission: boolean;
+    }>;
+  };
+
+  domainProfile: {
+    [category: string]: {
+      permissions: string[];
+      count: number;
+      icon: string;
+      color: string;
+      description: string;
+    };
+  };
+
+  rawManifest: string;
+}
+```
+
+---
+
+## 12. Error Handling Strategy
+
+```
+ALL errors handled in useAnalysis hook:
+
+1. Invalid file type → "Unsupported file type. Please upload an .apk or .xml file."
+2. APK missing manifest → "AndroidManifest.xml not found inside the APK."
+3. Empty/corrupt file → "Could not read the file. It may be corrupt."
+4. No permissions found → Show result with 0 permissions, score of 0, grade A.
+   Display: "No permissions were detected in this manifest."
+   (This is NOT an error — it's a valid result)
+5. Any unexpected error → "Analysis failed. Please try a valid file."
+
+Error display: Red-bordered card with error icon in the upload area.
+User can retry by selecting/dropping another file.
+```
+
+---
+
+## 13. Performance Considerations
+
+```
+1. All processing is synchronous except file reading (async)
+2. JSZip operations are async — use proper await
+3. Regex operations on manifest content are fast (manifest files are small, typically < 100KB)
+4. Recharts renders only after analysis completes (conditional rendering)
+5. Permission filtering/sorting in SearchFilter uses useMemo for optimization
+6. No debounce needed for search (small dataset)
+7. No virtualization needed (permission lists rarely exceed 50-100 items)
+```
+
+---
+
+## 14. Accessibility Requirements
+
+```
+1. All interactive elements must be keyboard accessible
+2. File upload supports keyboard (Enter/Space to open file dialog)
+3. Color is not the ONLY indicator — always pair with text/icons
+4. Risk badges include text labels, not just colors
+5. Charts include tooltips with readable text
+6. Collapsible sections useable via keyboard
+7. Proper heading hierarchy (h1 → h2 → h3)
+8. Alt text on any images/icons where needed
+9. Focus visible outlines on all interactive elements
+```
+
+---
+
+## 15. Deployment Configuration
+
+### Vite Config (`vite.config.js`)
+
+```javascript
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+
+export default defineConfig({
+  plugins: [react()],
+  base: '/', // Change to '/repo-name/' for GitHub Pages
+  build: {
+    outDir: 'dist',
+    sourcemap: false
+  }
+});
+```
+
+### For GitHub Pages deployment:
+
+```
+base: '/appranium/'
+```
+
+### Netlify: No special config needed — just set build command and output dir.
+
+```
+Build command: npm run build
+Publish directory: dist
+```
+
+---
+
+## 16. Testing Approach (Manual)
+
+```
+Test with:
+1. Plain XML manifest file (from any Android project)
+2. Debug APK (from Android Studio)
+3. Release APK (any app downloaded from web)
+4. Empty XML file (should show 0 permissions, no crash)
+5. Non-Android file (should show error)
+6. APK with no AndroidManifest.xml (should show error)
+7. Large APK (should handle without freezing browser)
+8. Manifest with compiled binary XML (should extract at least permissions via string scanning)
+```
+
+---
+
+## 17. Files to Create (Complete Checklist)
+
+```
+[ ] package.json
+[ ] vite.config.js
+[ ] public/index.html (with Inter font link)
+[ ] public/favicon.ico
+[ ] src/index.js
+[ ] src/App.js
+[ ] src/App.css
+[ ] src/data/permissionDatabase.js
+[ ] src/data/suspiciousCombos.js
+[ ] src/data/domainCategories.js
+[ ] src/data/educationalContent.js
+[ ] src/utils/fileHandler.js
+[ ] src/utils/permissionExtractor.js
+[ ] src/utils/riskScorer.js
+[ ] src/utils/comboDetector.js
+[ ] src/utils/manifestAnalyzer.js
+[ ] src/utils/componentAnalyzer.js
+[ ] src/utils/metadataExtractor.js
+[ ] src/utils/domainCategorizer.js
+[ ] src/utils/manifestParser.js (orchestrator)
+[ ] src/hooks/useAnalysis.js
+[ ] src/components/Header/Header.jsx
+[ ] src/components/Header/Header.css
+[ ] src/components/FileUpload/FileUpload.jsx
+[ ] src/components/FileUpload/FileUpload.css
+[ ] src/components/AppOverview/AppOverview.jsx
+[ ] src/components/AppOverview/AppOverview.css
+[ ] src/components/RiskScore/RiskScore.jsx
+[ ] src/components/RiskScore/RiskScore.css
+[ ] src/components/SuspiciousCombos/SuspiciousCombos.jsx
+[ ] src/components/SuspiciousCombos/SuspiciousCombos.css
+[ ] src/components/ManifestWarnings/ManifestWarnings.jsx
+[ ] src/components/ManifestWarnings/ManifestWarnings.css
+[ ] src/components/ComponentExposure/ComponentExposure.jsx
+[ ] src/components/ComponentExposure/ComponentExposure.css
+[ ] src/components/RiskCharts/RiskCharts.jsx
+[ ] src/components/RiskCharts/RiskCharts.css
+[ ] src/components/SearchFilter/SearchFilter.jsx
+[ ] src/components/SearchFilter/SearchFilter.css
+[ ] src/components/PermissionBreakdown/PermissionBreakdown.jsx
+[ ] src/components/PermissionBreakdown/PermissionBreakdown.css
+[ ] src/components/DataExposureProfile/DataExposureProfile.jsx
+[ ] src/components/DataExposureProfile/DataExposureProfile.css
+[ ] src/components/EducationalInsights/EducationalInsights.jsx
+[ ] src/components/EducationalInsights/EducationalInsights.css
+[ ] src/components/PrivacyBadge/PrivacyBadge.jsx
+[ ] src/components/PrivacyBadge/PrivacyBadge.css
+[ ] src/components/Footer/Footer.jsx
+[ ] src/components/Footer/Footer.css
+[ ] src/components/common/Badge.jsx
+[ ] src/components/common/Card.jsx
+[ ] src/components/common/GaugeCircle.jsx
+[ ] src/components/common/Collapsible.jsx
+[ ] src/components/common/common.css
+[ ] README.md
+```
+
+**Total: 50 files**
+
+---
+
+## 18. README.md Content
+
+```markdown
+# 🛡️ Appranium
+
+**Client-Side Android Privacy Analyzer**
+
+Appranium is a 100% browser-based static analysis tool that examines Android 
+application manifests for privacy and security risks. No data ever leaves 
+your browser.
+
+## Features
+
+- 📱 Upload APK or AndroidManifest.xml files
+- 🔒 100% client-side processing — zero uploads
+- 📊 Weighted privacy risk scoring (A–F grades)
+- ⚠️ Suspicious permission combination detection
+- 🛡️ Manifest security analysis (SDK, debug, backup flags)
+- 🔓 Exported component detection
+- 📈 Interactive risk charts
+- 🔍 Searchable and filterable permission list
+- 🎯 Data exposure profiling by domain
+- 📚 Educational security insights
+
+## Tech Stack
+
+- React 18
+- JSZip (APK extraction)
+- Recharts (visualization)
+- Vite (build tool)
+- No backend. No APIs. No tracking.
+
+## Getting Started
+
+```bash
+npm install
+npm run dev
+```
+
+## Build
+
+```bash
+npm run build
+```
+
+## Deploy
+
+Works on any static hosting: Netlify, Vercel, GitHub Pages.
+
+## Privacy
+
+- No files uploaded anywhere
+- No analytics or telemetry
+- No cookies
+- All processing in-memory in your browser
+- Source code is fully auditable
+
+## License
+
+MIT
+```
+
+---
+
+This document contains **every specification, data structure, algorithm, component behavior, style rule, and file path** needed for an AI or developer to build Appranium V2 from scratch. Each utility function includes its exact logic. Each component includes its exact props, display rules, and styling direction. The data layer is fully populated. No ambiguity remains.

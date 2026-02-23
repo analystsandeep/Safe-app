@@ -1,0 +1,89 @@
+/* Responsive table-style overview */
+.overview-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: var(--radius-small);
+    overflow: hidden;
+}
+
+.overview-table tr {
+    transition: background 0.2s;
+}
+
+.overview-table tr:hover td {
+    background: rgba(192, 132, 252, 0.05);
+}
+
+.overview-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.875rem;
+}
+
+.overview-table tr:last-child td {
+    border-bottom: none;
+}
+
+.ot-label {
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    letter-spacing: 0.8px;
+    width: 140px;
+    white-space: nowrap;
+}
+
+.ot-value {
+    color: var(--text-primary);
+    font-weight: 500;
+    word-break: break-all;
+}
+
+.ot-value.mono {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.8rem;
+    color: var(--accent-primary);
+}
+
+.file-type-badge {
+    padding: 3px 14px;
+    border-radius: 99px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.file-type-badge.apk {
+    background: rgba(192, 132, 252, 0.15);
+    color: var(--accent-primary);
+    border: 1px solid rgba(192, 132, 252, 0.35);
+}
+
+.file-type-badge.xml {
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--accent-gold);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+/* Responsive: stack on mobile */
+@media (max-width: 520px) {
+
+    .overview-table,
+    .overview-table tbody,
+    .overview-table tr,
+    .overview-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .ot-label {
+        padding-bottom: 2px;
+        border-bottom: none;
+    }
+
+    .ot-value {
+        padding-top: 2px;
+    }
+}

@@ -1,0 +1,89 @@
+/* ===================== CARD ===================== */
+/* backdrop-filter removed from card for scroll performance */
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.card-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.card-body {
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+/* ===================== COLLAPSIBLE ===================== */
+.collapsible {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-small);
+  margin-bottom: 6px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.015);
+  transition: border-color 0.2s;
+}
+
+.collapsible:hover {
+  border-color: rgba(192, 132, 252, 0.2);
+}
+
+.collapsible-trigger {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 13px 18px;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s;
+  font-family: 'Inter', sans-serif;
+}
+
+.collapsible-trigger:hover {
+  background: rgba(192, 132, 252, 0.05);
+}
+
+.collapsible-chevron {
+  font-size: 0.6rem;
+  color: var(--accent-primary);
+  transition: transform 0.25s ease;
+  opacity: 0.7;
+}
+
+.collapsible-chevron.open {
+  transform: rotate(180deg);
+  opacity: 1;
+}
+
+.collapsible-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.collapsible-content.open {
+  max-height: 2000px;
+}
+
+.collapsible-inner {
+  padding: 14px 18px;
+  background: rgba(0, 0, 0, 0.18);
+  border-top: 1px solid var(--border-color);
+}

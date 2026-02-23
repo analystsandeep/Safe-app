@@ -1,0 +1,76 @@
+/* Icon box for react-icons inside card headers */
+.card-icon-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(192, 132, 252, 0.1);
+    color: var(--accent-primary);
+    flex-shrink: 0;
+}
+
+/* SearchFilter colored dot */
+.rf-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* Header shield icon */
+.header-shield-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background: rgba(192, 132, 252, 0.12);
+    color: var(--accent-primary);
+    border: 1px solid rgba(192, 132, 252, 0.2);
+    box-shadow: 0 0 20px rgba(192, 132, 252, 0.15);
+    animation: iconGlow 3s ease-in-out infinite;
+}
+
+@keyframes iconGlow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 20px rgba(192, 132, 252, 0.15);
+    }
+
+    50% {
+        box-shadow: 0 0 32px rgba(244, 63, 94, 0.2);
+        color: #f43f5e;
+    }
+}
+
+/* Privacy badge icon */
+.pb-icon-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    flex-shrink: 0;
+    background: rgba(34, 197, 94, 0.1);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+/* Domain icon in DataExposureProfile */
+.dep-icon-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.06);
+    transition: background 0.2s;
+}

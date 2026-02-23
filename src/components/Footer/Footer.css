@@ -1,0 +1,36 @@
+.footer {
+    background: rgba(8, 8, 15, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(192, 132, 252, 0.08);
+    padding: 36px 0;
+    margin-top: 48px;
+    text-align: center;
+}
+
+.footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.footer-brand {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    margin: 0 0 6px;
+    letter-spacing: -0.01em;
+}
+
+.footer-sub {
+    font-size: 0.78rem;
+    color: #3f3f55;
+    margin: 0 0 8px;
+}
+
+.footer-privacy {
+    font-size: 0.82rem;
+    color: #4ade80;
+    margin: 0;
+    font-weight: 600;
+}

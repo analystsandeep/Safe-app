@@ -1,0 +1,106 @@
+.search-filter-bar {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin-bottom: 12px;
+}
+
+.search-input {
+    flex: 1;
+    min-width: 180px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(192, 132, 252, 0.14);
+    border-radius: 9px;
+    padding: 9px 14px;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    outline: none;
+    font-family: 'Inter', sans-serif;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-input::placeholder {
+    color: var(--text-secondary);
+}
+
+.search-input:focus {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(192, 132, 252, 0.1);
+}
+
+.risk-filter-btns {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.rf-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid var(--border-color);
+    border-radius: 99px;
+    padding: 5px 14px;
+    color: var(--text-secondary);
+    font-size: 0.76rem;
+    cursor: pointer;
+    transition: all 0.18s;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.rf-btn:hover {
+    border-color: rgba(192, 132, 252, 0.3);
+    color: var(--text-primary);
+}
+
+.rf-btn.active {
+    background: rgba(192, 132, 252, 0.12);
+    border-color: rgba(192, 132, 252, 0.4);
+    color: var(--accent-primary);
+}
+
+/* Colored dot for risk filters */
+.rf-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.sort-select {
+    background: #1a1630;
+    border: 1px solid rgba(192, 132, 252, 0.2);
+    border-radius: 9px;
+    padding: 7px 14px;
+    color: #f0eeff;
+    font-size: 0.82rem;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    appearance: auto;
+    -webkit-appearance: auto;
+}
+
+.sort-select option {
+    background: #1a1630;
+    color: #f0eeff;
+    padding: 8px;
+}
+
+.filter-count {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    margin-bottom: 12px;
+}
+
+.filter-count strong {
+    color: var(--accent-primary);
+}

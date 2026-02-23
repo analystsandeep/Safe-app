@@ -1,0 +1,12 @@
+.edu-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.edu-content {
+    color: var(--text-secondary);
+    font-size: 0.84rem;
+    line-height: 1.8;
+    margin: 0;
+}
