@@ -42,22 +42,6 @@ export function FileUpload({ onFileSelect, loading, error }) {
                     Audit any Android app's permissions, manifest structure, and privacy risks — entirely in your browser. No data leaves your device.
                 </p>
 
-                <div className="hero-trust-row">
-                    <span className="trust-item">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
-                        100% Local Execution
-                    </span>
-                    <span className="trust-sep">·</span>
-                    <span className="trust-item">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
-                        No Uploads
-                    </span>
-                    <span className="trust-sep">·</span>
-                    <span className="trust-item">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
-                        Open Source
-                    </span>
-                </div>
             </div>
 
             {/* ── Right Column: Upload Module ── */}

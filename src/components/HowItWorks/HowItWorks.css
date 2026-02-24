@@ -31,7 +31,7 @@
 }
 
 /* ==========================================================================
-   STEPS — timeline
+   STEPS
    ========================================================================== */
 .hiw-steps {
     display: flex;
@@ -41,66 +41,62 @@
 
 .hiw-step {
     display: grid;
-    grid-template-columns: 80px 1fr;
-    gap: 0 36px;
+    grid-template-columns: 64px 1fr;
+    gap: 0 32px;
+    position: relative;
 }
 
-/* ── LEFT COLUMN: number + line ── */
+/* ── LEFT COLUMN: number + connecting line ── */
 .hiw-step-left {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 0;
+    align-items: flex-end;
+    /* right-align so line sits at the rightmost edge */
+    padding-top: 4px;
 }
 
 .hiw-step-num {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.1em;
     color: var(--accent);
     opacity: 0.85;
-    padding: 4px 0 16px;
-    text-align: center;
-    width: 100%;
-    border-right: 1px solid var(--divider);
-    flex-shrink: 0;
     position: relative;
+    /* small dot marker on the right edge */
+    padding-right: 12px;
 }
 
-/* Dot on the timeline line */
+/* Glowing dot — sits right at the border */
 .hiw-step-num::after {
     content: '';
     position: absolute;
-    right: -5px;
-    top: 6px;
-    width: 9px;
-    height: 9px;
+    right: -4px;
+    top: 5px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
     background: var(--accent);
     opacity: 0.7;
-    box-shadow: 0 0 12px rgba(122, 90, 248, 0.5);
+    box-shadow: 0 0 10px rgba(122, 90, 248, 0.5);
 }
 
-/* The connecting vertical line below the number */
+/* Thin vertical line connecting steps — sits at right edge of left col */
 .hiw-step-line {
-    flex: 1;
     width: 1px;
+    flex: 1;
+    min-height: 40px;
     background: var(--divider);
-    align-self: stretch;
-    min-height: 32px;
-    border-right: 1px solid var(--divider);
-    /* shift it to align with the right border above */
-    margin-right: -1px;
-    width: 100%;
+    margin-right: 3px;
+    /* aligns center of dot (8px wide, right:-4px) with line */
+    margin-top: 4px;
 }
 
 /* ── RIGHT COLUMN: content ── */
 .hiw-step-content {
-    padding: 4px 0 56px;
+    padding: 2px 0 52px;
 }
 
-/* last step has less bottom padding */
 .hiw-step:last-child .hiw-step-content {
     padding-bottom: 0;
 }
@@ -146,8 +142,8 @@
 /* ── RESPONSIVE ── */
 @media (max-width: 640px) {
     .hiw-step {
-        grid-template-columns: 52px 1fr;
-        gap: 0 20px;
+        grid-template-columns: 44px 1fr;
+        gap: 0 16px;
     }
 
     .hiw-step-title {
