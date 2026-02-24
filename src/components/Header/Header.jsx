@@ -1,5 +1,4 @@
 import React from 'react';
-import { HiOutlineShieldCheck } from 'react-icons/hi2';
 import './Header.css';
 
 export function Header() {
@@ -7,14 +6,31 @@ export function Header() {
         <header className="header">
             <div className="header-inner">
                 <div className="header-logo">
-                    <span className="header-shield-icon">
-                        <HiOutlineShieldCheck size={28} />
+                    <div className="header-shield-wrap">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                        </svg>
+                    </div>
+                    <span className="header-wordmark">Appranium</span>
+                </div>
+
+                <nav className="header-nav">
+                    <span className="header-local-badge">
+                        <span className="header-dot" />
+                        100% Local
                     </span>
-                    <h1 className="header-title">Appranium</h1>
-                </div>
-                <div className="header-badge">
-                    <span className="header-privacy-chip">100% Local</span>
-                </div>
+                    <a
+                        className="header-github-link"
+                        href="https://github.com/analystsandeep/Safe-app"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        GitHub
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M7 17L17 7M17 7H7M17 7v10" />
+                        </svg>
+                    </a>
+                </nav>
             </div>
         </header>
     );

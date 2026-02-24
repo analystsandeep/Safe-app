@@ -1,42 +1,56 @@
-/* ===================== CARD ===================== */
-/* backdrop-filter removed from card for scroll performance */
+/* ==========================================================================
+   COMMON — Card + Collapsible (Editorial Style)
+   ========================================================================== */
+
+/* ── CARD HEADER ── */
 .card-header {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 18px;
+  gap: 12px;
+  margin-bottom: 24px;
 }
 
 .card-icon {
-  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
   line-height: 1;
+  color: var(--accent);
+  opacity: 0.85;
 }
 
 .card-title {
-  font-size: 1.05rem;
-  font-weight: 700;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
   color: var(--text-primary);
   margin: 0;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 }
 
 .card-body {
   color: var(--text-secondary);
-  line-height: 1.65;
+  line-height: 1.7;
+  font-size: 14px;
 }
 
-/* ===================== COLLAPSIBLE ===================== */
+/* ==========================================================================
+   COLLAPSIBLE — Editorial expandable modules
+   ========================================================================== */
 .collapsible {
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-small);
-  margin-bottom: 6px;
+  border: none;
+  border-left: 2px solid rgba(122, 90, 248, 0.2);
+  border-radius: 0;
+  margin-bottom: 0;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.015);
-  transition: border-color 0.2s;
+  background: transparent;
+  transition: border-color 0.3s var(--ease-premium);
+  padding-left: 20px;
 }
 
 .collapsible:hover {
-  border-color: rgba(192, 132, 252, 0.2);
+  border-left-color: rgba(122, 90, 248, 0.6);
 }
 
 .collapsible-trigger {
@@ -44,38 +58,42 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 13px 18px;
+  padding: 16px 0;
   background: none;
   border: none;
+  border-bottom: 1px solid var(--divider);
   color: var(--text-primary);
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
   cursor: pointer;
   text-align: left;
-  transition: background 0.15s;
-  font-family: 'Inter', sans-serif;
+  transition: color 0.2s var(--ease-premium);
+  letter-spacing: -0.01em;
 }
 
 .collapsible-trigger:hover {
-  background: rgba(192, 132, 252, 0.05);
+  color: var(--text-primary);
 }
 
 .collapsible-chevron {
-  font-size: 0.6rem;
-  color: var(--accent-primary);
-  transition: transform 0.25s ease;
-  opacity: 0.7;
+  font-size: 0.55rem;
+  color: var(--text-muted);
+  transition: transform 0.35s var(--ease-premium), color 0.2s;
+  opacity: 0.8;
+  flex-shrink: 0;
 }
 
 .collapsible-chevron.open {
   transform: rotate(180deg);
+  color: var(--accent);
   opacity: 1;
 }
 
 .collapsible-content {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: max-height 0.5s var(--ease-premium);
 }
 
 .collapsible-content.open {
@@ -83,7 +101,7 @@
 }
 
 .collapsible-inner {
-  padding: 14px 18px;
-  background: rgba(0, 0, 0, 0.18);
-  border-top: 1px solid var(--border-color);
+  padding: 20px 0 16px;
+  background: transparent;
+  border: none;
 }

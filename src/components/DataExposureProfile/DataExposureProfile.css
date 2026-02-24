@@ -1,21 +1,23 @@
+/* ── DOMAIN LIST ── */
 .dep-list {
     display: flex;
     flex-direction: column;
-    gap: 7px;
+    gap: 8px;
 }
 
 .dep-row {
     background: rgba(255, 255, 255, 0.02);
-    border: 1px solid var(--border-color);
-    border-radius: 9px;
+    border: 1px solid var(--border);
+    border-radius: var(--card-radius);
     overflow: hidden;
-    transition: border-color 0.2s;
+    transition: border-color 0.25s var(--ease-premium);
 }
 
 .dep-row:hover {
-    border-color: rgba(192, 132, 252, 0.22);
+    border-color: var(--border-hover);
 }
 
+/* ── EXPAND BUTTON ── */
 .dep-btn {
     width: 100%;
     display: flex;
@@ -29,11 +31,11 @@
     text-align: left;
     gap: 10px;
     font-family: 'Inter', sans-serif;
-    transition: background 0.15s;
+    transition: background 0.2s var(--ease-premium);
 }
 
 .dep-btn:hover {
-    background: rgba(192, 132, 252, 0.04);
+    background: rgba(255, 255, 255, 0.03);
 }
 
 .dep-left {
@@ -45,21 +47,24 @@
 }
 
 .dep-icon {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     flex-shrink: 0;
 }
 
 .dep-cat {
     display: block;
-    font-weight: 700;
-    font-size: 0.875rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: 13.5px;
     color: var(--text-primary);
+    letter-spacing: -0.01em;
 }
 
 .dep-desc {
     display: block;
-    font-size: 0.72rem;
-    color: var(--text-secondary);
+    font-size: 11.5px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -74,32 +79,34 @@
 }
 
 .dep-count {
-    font-size: 1.3rem;
-    font-weight: 900;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 800;
     letter-spacing: -0.04em;
 }
 
 .dep-chevron {
-    font-size: 0.6rem;
-    color: var(--text-secondary);
+    font-size: 0.55rem;
+    color: var(--text-muted);
 }
 
+/* ── PERMISSIONS CHIPS ── */
 .dep-perms {
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
     padding: 10px 16px;
-    border-top: 1px solid var(--border-color);
-    background: rgba(0, 0, 0, 0.12);
+    border-top: 1px solid var(--divider);
+    background: rgba(0, 0, 0, 0.1);
 }
 
 .dep-perm-chip {
-    font-size: 0.7rem;
-    font-family: 'Fira Code', monospace;
+    font-size: 10.5px;
+    font-family: 'JetBrains Mono', monospace;
     border: 1px solid;
     border-radius: 99px;
     padding: 2px 10px;
-    font-weight: 700;
+    font-weight: 500;
     background: transparent;
-    opacity: 0.85;
+    opacity: 0.8;
 }

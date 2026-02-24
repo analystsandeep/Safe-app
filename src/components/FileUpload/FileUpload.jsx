@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from 'react';
-import { HiOutlineArrowUpTray } from 'react-icons/hi2';
 import './FileUpload.css';
 
 export function FileUpload({ onFileSelect, loading, error }) {
@@ -29,56 +28,98 @@ export function FileUpload({ onFileSelect, loading, error }) {
     };
 
     return (
-        <div className="upload-wrapper">
-            <div className="upload-hero">
-                <h2 className="upload-headline">Analyze Any Android App for Privacy Risks</h2>
-                <p className="upload-sub">Drag &amp; drop your APK or AndroidManifest.xml to get started.</p>
+        <section className="hero-section">
+            {/* ── Left Column: Headline + Trust Row ── */}
+            <div className="hero-left">
+                <div className="hero-label">Privacy Intelligence Platform</div>
+
+                <h1 className="hero-headline">
+                    Privacy Intelligence<br />
+                    <span className="hero-headline-accent">for Android</span>
+                </h1>
+
+                <p className="hero-sub">
+                    Audit any Android app's permissions, manifest structure, and privacy risks — entirely in your browser. No data leaves your device.
+                </p>
+
+                <div className="hero-trust-row">
+                    <span className="trust-item">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                        100% Local Execution
+                    </span>
+                    <span className="trust-sep">·</span>
+                    <span className="trust-item">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                        No Uploads
+                    </span>
+                    <span className="trust-sep">·</span>
+                    <span className="trust-item">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                        Open Source
+                    </span>
+                </div>
             </div>
 
-            <div
-                className={`upload-zone ${dragging ? 'dragging' : ''} ${loading ? 'loading' : ''}`}
-                onDrop={onDrop}
-                onDragOver={onDragOver}
-                onDragLeave={onDragLeave}
-                onClick={() => !loading && document.getElementById('file-input').click()}
-                onKeyDown={onKeyDown}
-                tabIndex={0}
-                role="button"
-                aria-label="Upload APK or AndroidManifest.xml file"
-            >
-                <input
-                    id="file-input"
-                    type="file"
-                    accept=".apk,.xml"
-                    style={{ display: 'none' }}
-                    onChange={onInputChange}
-                />
-                {loading ? (
-                    <div className="upload-loading">
-                        <div className="spinner" />
-                        <p>Analyzing file...</p>
+            {/* ── Right Column: Upload Module ── */}
+            <div className="hero-right">
+                <div className="upload-backlight" />
+
+                <div
+                    id="upload-zone"
+                    className={`upload-zone${dragging ? ' dragging' : ''}${loading ? ' loading' : ''}`}
+                    onDrop={onDrop}
+                    onDragOver={onDragOver}
+                    onDragLeave={onDragLeave}
+                    onClick={() => !loading && document.getElementById('file-input').click()}
+                    onKeyDown={onKeyDown}
+                    tabIndex={0}
+                    role="button"
+                    aria-label="Upload APK or AndroidManifest.xml file"
+                >
+                    <input
+                        id="file-input"
+                        type="file"
+                        accept=".apk,.xml"
+                        style={{ display: 'none' }}
+                        onChange={onInputChange}
+                    />
+
+                    {loading ? (
+                        <div className="upload-loading">
+                            <div className="spinner" />
+                            <p className="upload-loading-text">Analyzing manifest…</p>
+                            <p className="upload-loading-sub">Classifying permissions & risks</p>
+                        </div>
+                    ) : (
+                        <>
+                            <div className="upload-icon-wrap">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                                    <polyline points="17 8 12 3 7 8" />
+                                    <line x1="12" y1="3" x2="12" y2="15" />
+                                </svg>
+                            </div>
+                            <p className="upload-primary">
+                                Drop your file here
+                            </p>
+                            <p className="upload-secondary">or <span className="upload-link">browse to upload</span></p>
+                            <div className="upload-formats">
+                                <span className="format-pill">.apk</span>
+                                <span className="format-pill">.xml</span>
+                            </div>
+                        </>
+                    )}
+                </div>
+
+                {error && (
+                    <div className="upload-error" role="alert">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
+                        </svg>
+                        <span>{error}</span>
                     </div>
-                ) : (
-                    <>
-                        <div className="upload-icon-wrap">
-                            <HiOutlineArrowUpTray size={28} />
-                        </div>
-                        <p className="upload-primary">Drop your <strong>.apk</strong> or <strong>AndroidManifest.xml</strong> here</p>
-                        <p className="upload-secondary">or <span className="upload-link">click to browse</span></p>
-                        <div className="upload-formats">
-                            <span className="format-pill">.apk</span>
-                            <span className="format-pill">.xml</span>
-                        </div>
-                    </>
                 )}
             </div>
-
-            {error && (
-                <div className="upload-error" role="alert">
-                    <span>⚠️</span>
-                    <span>{error}</span>
-                </div>
-            )}
-        </div>
+        </section>
     );
 }

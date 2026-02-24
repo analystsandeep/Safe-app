@@ -4,6 +4,9 @@ import { useAnalysis } from './hooks/useAnalysis.js';
 // Components
 import { Header } from './components/Header/Header.jsx';
 import { FileUpload } from './components/FileUpload/FileUpload.jsx';
+import { HowItWorks } from './components/HowItWorks/HowItWorks.jsx';
+import { TerminalDemo } from './components/TerminalDemo/TerminalDemo.jsx';
+import { EducationalInsights } from './components/EducationalInsights/EducationalInsights.jsx';
 import { AppOverview } from './components/AppOverview/AppOverview.jsx';
 import { RiskScore } from './components/RiskScore/RiskScore.jsx';
 import { SuspiciousCombos } from './components/SuspiciousCombos/SuspiciousCombos.jsx';
@@ -13,7 +16,6 @@ import { RiskCharts } from './components/RiskCharts/RiskCharts.jsx';
 import { SearchFilter } from './components/SearchFilter/SearchFilter.jsx';
 import { PermissionBreakdown } from './components/PermissionBreakdown/PermissionBreakdown.jsx';
 import { DataExposureProfile } from './components/DataExposureProfile/DataExposureProfile.jsx';
-import { EducationalInsights } from './components/EducationalInsights/EducationalInsights.jsx';
 import { Footer } from './components/Footer/Footer.jsx';
 
 import './App.css';
@@ -29,6 +31,8 @@ function App() {
                 {!result && (
                     <>
                         <FileUpload onFileSelect={analyze} loading={loading} error={error} />
+                        <HowItWorks />
+                        <TerminalDemo />
                         <EducationalInsights />
                     </>
                 )}
@@ -38,10 +42,13 @@ function App() {
                     <>
                         <div className="scan-another-bar">
                             <button className="scan-another-btn" onClick={reset}>
-                                ← Scan Another File
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" />
+                                </svg>
+                                Scan Another File
                             </button>
                             <span className="scan-file-info">
-                                Analyzed: <strong>{result.fileName}</strong>
+                                <strong>{result.fileName}</strong>
                             </span>
                         </div>
 
@@ -51,7 +58,7 @@ function App() {
                             <RiskScore data={result.riskScore} totalPermissions={result.totalPermissions} />
                         </div>
 
-                        {/* Row 2: Charts (Risk Distribution + Domain Exposure) */}
+                        {/* Row 2: Charts */}
                         {Object.keys(result.domainProfile).length > 0 && (
                             <RiskCharts
                                 riskBreakdown={result.riskScore.breakdown}
@@ -71,7 +78,6 @@ function App() {
                         <ManifestWarnings analysis={result.manifestAnalysis} />
                         <ComponentExposure data={result.componentAnalysis} />
                         <DataExposureProfile domains={result.domainProfile} />
-                        {/* EducationalInsights and PrivacyBadge intentionally omitted from report */}
                     </>
                 )}
             </main>

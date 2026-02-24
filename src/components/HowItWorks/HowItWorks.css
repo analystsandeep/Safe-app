@@ -1,0 +1,160 @@
+/* ==========================================================================
+   HOW IT WORKS — Vertical timeline layout
+   ========================================================================== */
+.hiw-section {
+    padding: 80px 0;
+    border-top: 1px solid var(--divider);
+}
+
+.hiw-header {
+    margin-bottom: 64px;
+    max-width: 560px;
+}
+
+.hiw-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 36px;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+.hiw-subtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    color: var(--text-muted);
+    margin: 0;
+    letter-spacing: 0.04em;
+}
+
+/* ==========================================================================
+   STEPS — timeline
+   ========================================================================== */
+.hiw-steps {
+    display: flex;
+    flex-direction: column;
+    max-width: 700px;
+}
+
+.hiw-step {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 0 36px;
+}
+
+/* ── LEFT COLUMN: number + line ── */
+.hiw-step-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+}
+
+.hiw-step-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    opacity: 0.85;
+    padding: 4px 0 16px;
+    text-align: center;
+    width: 100%;
+    border-right: 1px solid var(--divider);
+    flex-shrink: 0;
+    position: relative;
+}
+
+/* Dot on the timeline line */
+.hiw-step-num::after {
+    content: '';
+    position: absolute;
+    right: -5px;
+    top: 6px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0.7;
+    box-shadow: 0 0 12px rgba(122, 90, 248, 0.5);
+}
+
+/* The connecting vertical line below the number */
+.hiw-step-line {
+    flex: 1;
+    width: 1px;
+    background: var(--divider);
+    align-self: stretch;
+    min-height: 32px;
+    border-right: 1px solid var(--divider);
+    /* shift it to align with the right border above */
+    margin-right: -1px;
+    width: 100%;
+}
+
+/* ── RIGHT COLUMN: content ── */
+.hiw-step-content {
+    padding: 4px 0 56px;
+}
+
+/* last step has less bottom padding */
+.hiw-step:last-child .hiw-step-content {
+    padding-bottom: 0;
+}
+
+.hiw-step-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+    margin: 0 0 14px;
+    line-height: 1.2;
+}
+
+.hiw-step-desc {
+    font-size: 14.5px;
+    line-height: 1.78;
+    color: var(--text-secondary);
+    margin: 0 0 20px;
+    max-width: 520px;
+}
+
+/* ── Tags ── */
+.hiw-step-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.hiw-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border);
+    border-radius: 99px;
+    padding: 3px 12px;
+    white-space: nowrap;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 640px) {
+    .hiw-step {
+        grid-template-columns: 52px 1fr;
+        gap: 0 20px;
+    }
+
+    .hiw-step-title {
+        font-size: 17px;
+    }
+
+    .hiw-step-desc {
+        font-size: 13.5px;
+    }
+}
