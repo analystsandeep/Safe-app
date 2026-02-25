@@ -1,184 +1,112 @@
-# 🔐 Appranium — Android Privacy Analyzer
+# 🔐 Appranium — Security Intelligence Engine
 
-> **100% client-side APK & XML privacy analyzer. No uploads. No servers. No tracking.**
+> **100% Client-Side Android Security Intelligence. No uploads. No servers. Zero-Knowledge Analysis.**
 
 [![React](https://img.shields.io/badge/React-18.2-61DAFB?style=flat&logo=react)](https://react.dev/)
 [![Vite](https://img.shields.io/badge/Vite-5.0-646CFF?style=flat&logo=vite)](https://vitejs.dev/)
-[![License](https://img.shields.io/badge/license-MIT-green?style=flat)](LICENSE)
-[![Privacy](https://img.shields.io/badge/privacy-100%25%20local-brightgreen?style=flat)](#privacy)
+[![Three.js](https://img.shields.io/badge/Three.js-r160-black?style=flat&logo=three.js)](https://threejs.org/)
+[![Privacy](https://img.shields.io/badge/privacy-100%25%20local-brightgreen?style=flat)](#-privacy-first-architecture)
 
-Appranium is an open-source, browser-based tool that analyzes Android APK files and `AndroidManifest.xml` files for privacy risks, dangerous permission combinations, exposed components, and security misconfigurations — all without ever sending your file to a server.
-
----
-
-## ✨ Features
-
-### 🔍 File Analysis
-- **APK files** — unzips the APK, parses the binary AXML manifest, and falls back to string extraction if needed
-- **Raw XML files** — directly parses plain-text `AndroidManifest.xml` files
-- Drag-and-drop or click-to-upload interface
-
-### 📊 Risk Scoring
-- Weighted risk score (0–100) based on permission danger level:
-  - **High-risk** permissions → 20 pts each
-  - **Medium-risk** → 10 pts each
-  - **Low-risk** → 2 pts each
-  - **Unknown** → 5 pts each
-- Letter grades: **A** (Low) · **B** (Moderate) · **C** (Elevated) · **D** (High) · **F** (Critical)
-
-### 🛡️ Permission Analysis
-- Categorized permission list (High / Medium / Low / Unknown risk)
-- Search and filter permissions by name or category
-- Per-permission descriptions and risk explanations
-- Domain-based exposure profile (Location, Identity, Storage, Network, Device, etc.)
-
-### ⚠️ Suspicious Permission Combinations
-- Detects dangerous permission pairings (e.g. location + background execution, camera + internet)
-- Flags combinations commonly abused by malware or spyware
-
-### 🧩 Component Exposure Analysis
-- Identifies exported Activities, Services, Broadcast Receivers, and Content Providers
-- Flags unprotected exported components (missing `android:permission` guard)
-- Highlights components reachable by other apps without authentication
-
-### 📋 Manifest Security Warnings
-- Detects `debuggable=true`, `allowBackup=true`, `usesCleartextTraffic=true`, and other risky flags
-- Checks target SDK version and minimum SDK for known vulnerability ranges
-
-### 📈 Visual Charts
-- Risk distribution donut/bar chart (High / Medium / Low / Unknown split)
-- Domain exposure breakdown chart
-
-### 🎓 Educational Insights
-- Inline explanations of what each permission does and why it may be risky
-- Beginner-friendly context for non-technical users
+Appranium is a premium, browser-based **Security Intelligence Engine** designed to deconstruct Android APKs and manifests. It employs advanced static analysis, DEX byte-code inspection, and AI-driven risk scoring to expose hidden threats—all within the safety of your local browser environment.
 
 ---
 
-## 🚀 Getting Started
+## ✨ Core Intelligence Features
+
+### 🎬 Cinematic Analysis Pipeline
+- **3D Battle Scene**: An immersive Three.js-powered landing experience.
+- **Final Result Animation**: A high-impact cinematic reveal of the application's security grade.
+- **Parallax Interface**: A modern, editorial-grade UI with smooth scroll dynamics and glassmorphism.
+
+### 🔍 Deep Static Analysis
+- **DEX Byte-Code Insights**: Automatic scanning of `classes.dex` for runtime permission requests, dynamic code loading, and sensitive data sinks.
+- **Binary AXML Parsing**: Professional-grade extraction of manifest data from compiled APKs.
+- **Simulation Layer**: Predictive risk modeling that simulates potential attack vectors based on observed patterns.
+
+### 📊 Advanced Risk Scoring
+- **Weighted Intelligence**: Dynamic risk calculation that weighs permissions, suspicious combinations, and code-level findings.
+- **Customizable Weights**: A dedicated modal allowing security professionals to adjust risk sensitivity per category.
+- **Sticky Intelligence Panel**: A persistent HUD providing real-time risk context as you explore the report.
+
+### 🛡️ Privacy & Permissions
+- **Suspicious Combinations**: Detects dangerous pairings (e.g., Camera + Internet) used by advanced persistent threats.
+- **Domain-Based Profile**: Categorizes exposure across Location, Identity, Storage, and more.
+- **Educational Context**: Deep-dives into *why* specific permissions are flagged, bridging the gap between raw data and actionable intelligence.
+
+---
+
+## 🚀 Deployment
 
 ### Prerequisites
-- [Node.js](https://nodejs.org/) v18 or later
-- npm v9 or later
+- [Node.js](https://nodejs.org/) v18+
+- npm v9+
 
-### Installation
-
+### Quick Start
 ```bash
-# Clone the repository
 git clone https://github.com/your-username/appranium.git
 cd appranium
-
-# Install dependencies
 npm install
-```
-
-### Development
-
-```bash
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173) in your browser.
-
-### Production Build
-
+### Production
 ```bash
 npm run build
-```
-
-Output is placed in the `dist/` folder. You can serve it with any static file host.
-
-```bash
-# Preview the production build locally
-npm run preview
+# The 'dist/' directory is ready for static hosting (Vercel, Netlify, Cloudflare Pages)
 ```
 
 ---
 
-## 🗂️ Project Structure
+## 🏗️ Architecture & Structure
 
 ```
 src/
 ├── components/
-│   ├── AppOverview/          # App name, package, SDK versions
-│   ├── ComponentExposure/    # Exported Activities / Services / Receivers / Providers
-│   ├── DataExposureProfile/  # Domain-based permission categorization
-│   ├── EducationalInsights/  # Beginner-friendly permission explanations
-│   ├── FileUpload/           # Drag-and-drop file input
-│   ├── Footer/
-│   ├── Header/
-│   ├── ManifestWarnings/     # Debuggable, cleartext, backup flags
-│   ├── PermissionBreakdown/  # Per-permission detail cards
-│   ├── PrivacyBadge/         # Embeddable risk badge
-│   ├── RiskCharts/           # Recharts-based visualizations
-│   ├── RiskScore/            # Weighted score + letter grade
-│   ├── SearchFilter/         # Client-side permission search/filter
-│   ├── SuspiciousCombos/     # Dangerous permission pair detection
-│   └── common/               # Shared UI primitives
-├── data/
-│   └── permissionDatabase.js # Risk metadata for all known Android permissions
+│   ├── BattleScene/          # Three.js 3D landing environment
+│   ├── ParallaxHero/         # Glassmorphic landing hero
+│   ├── FinalResultAnimation/ # Cinematic result reveal
+│   ├── StickyRiskPanel/      # Persistent risk HUD
+│   ├── CodeLevelInsights/    # DEX byte-code analysis view
+│   ├── SimulatedRisks/       # Privacy threat simulations
+│   ├── RiskScore/            # Weighted intelligence engine UI
+│   ├── RiskCharts/           # Recharts visualizations
+│   ├── SuspiciousCombos/     # Pattern-match alert system
+│   └── common/               # Premium atomic UI primitives
 ├── hooks/
-│   └── useAnalysis.js        # Core analysis state management
+│   └── useAnalysis.js        # Core orchestration & state management
 └── utils/
-    ├── axmlParser.js          # Binary AXML → XML string parser
-    ├── comboDetector.js       # Suspicious permission combo rules
-    ├── componentAnalyzer.js   # Exported component scanner
-    ├── domainCategorizer.js   # Groups permissions by data domain
-    ├── fileHandler.js         # APK unzip + manifest extraction
-    ├── manifestAnalyzer.js    # Security flag detection
-    ├── manifestParser.js      # Orchestrates the full analysis pipeline
-    ├── metadataExtractor.js   # App name, package, SDK info
-    ├── permissionExtractor.js # Pulls permission strings from XML
-    └── riskScorer.js          # Weighted risk score calculator
+    ├── axmlParser.js         # Binary manifest deconstruction
+    ├── comboDetector.js      # Threat pattern matching
+    ├── fileHandler.js        # APK structure handling (JSZip)
+    ├── manifestParser.js     # Analysis pipeline orchestrator
+    └── riskScorer.js         # Weighted risk logic
 ```
 
 ---
 
-## 🔒 Privacy
+## 🔒 Privacy-First Architecture
 
-Appranium runs **entirely in your browser**. Your APK file is:
+Appranium is built on the principle of **Zero-Knowledge Analysis**. 
 
-- **Never uploaded** to any server
-- **Never stored** on disk or in the cloud
-- **Never transmitted** over the network
-- Processed purely in-memory using the [File API](https://developer.mozilla.org/en-US/docs/Web/API/File_API) and [JSZip](https://stuk.github.io/jszip/)
-
-You can verify this by running the app offline — it works with no internet connection after the initial page load.
+1. **Local Execution**: Analysis happens in your browser's V8 engine.
+2. **No Data Transit**: Your files never touch a network socket.
+3. **In-Memory Processing**: Data is processed in-RAM and cleared on session reset.
+4. **Offline Capable**: Once loaded, the engine requires zero internet connectivity.
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Technology | Purpose |
+| Technology | Role |
 |---|---|
-| [React 18](https://react.dev/) | UI framework |
-| [Vite 5](https://vitejs.dev/) | Build tool & dev server |
-| [JSZip](https://stuk.github.io/jszip/) | APK (ZIP) extraction in-browser |
-| [Recharts](https://recharts.org/) | Permission risk charts |
-| [React Icons](https://react-icons.github.io/react-icons/) | Icon library |
-| [Inter + Fira Code](https://fonts.google.com/) | Typography |
-
----
-
-## 📄 Supported File Types
-
-| File | Support |
-|---|---|
-| `.apk` | ✅ Full support — binary AXML parsed automatically |
-| `.xml` | ✅ Full support — plain-text `AndroidManifest.xml` |
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Here are some good starting points:
-
-- Expanding the **permission database** with more entries or updated risk levels
-- Adding new **suspicious combo rules** for emerging malware patterns
-- Improving **AXML parser** compatibility with edge-case APK formats
-- Translating the UI for international users
-
-Please open an issue before submitting large PRs.
+| **React 18** | Orchestration & UI |
+| **Vite 5** | High-performance Build Pipeline |
+| **Three.js / @react-three/fiber** | 3D Visualization & Cinematic FX |
+| **Framer Motion** | High-fidelity Animations |
+| **Recharts** | Data Visualizations |
+| **JSZip** | Browser-side APK Deconstruction |
+| **TensorFlow.js** | Security Intelligence (Experimental) |
+| **Dexie** | Client-side Persistance (IndexedDB) |
 
 ---
 
