@@ -28,6 +28,16 @@ const EDUCATIONAL_CONTENT = [
         id: 'debug-builds',
         title: 'Debug Builds in Production',
         content: `If an APK has android:debuggable="true" in its manifest, it means the app was built in debug mode. This allows anyone to attach a debugger, inspect memory, and bypass security checks. Production apps should never have this flag enabled.`
+    },
+    {
+        id: 'dex-analysis',
+        title: 'Code-Level Security Analysis (DEX)',
+        content: `Standard manifest analysis only checks what an app *claims* to do. Code-level analysis (DEX) goes deeper by scanning the actual executable logic for runtime permission requests, dynamic code loading, and data transmission sinks. This reveals hidden behaviors that don't appear in the manifest.`
+    },
+    {
+        id: 'ai-risk-scoring',
+        title: 'AI-Enhanced Risk Assessment',
+        content: `Appranium uses TensorFlow.js to run local ML inference on your device. By analyzing permission vectors and API usage patterns within the code, our AI model can adjust risk scores based on context — distinguishing between a legitimate camera app and a utility app secretly requesting recording privileges.`
     }
 ];
 

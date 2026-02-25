@@ -8,8 +8,13 @@ import { extractMetadata } from './metadataExtractor.js';
 import { categorizeByDomain } from './domainCategorizer.js';
 import PERMISSION_DATABASE from '../data/permissionDatabase.js';
 
-export async function analyzeFile(file) {
-    const { manifestContent, fileType, fileName } = await handleFile(file);
+import { scanDex } from './dexScanner.js';
+import { simulateBehaviors } from './simulationEngine.js';
+import { adjustScore } from './mlRiskModel.js';
+import { ENABLE_DEX_ANALYSIS, ENABLE_BEHAVIOR_SIMULATION, ENABLE_ML_SCORING } from '../config.js';
+
+export async function analyzeFile(file, customWeights = null) {
+    const { manifestContent, fileType, fileName, dexBuffer } = await handleFile(file);
 
     const permissions = extractPermissions(manifestContent);
 
@@ -19,12 +24,37 @@ export async function analyzeFile(file) {
             description: 'This permission is not in our database. Review manually.',
             category: 'Unknown'
         };
-        return { name: perm, shortName: perm.split('.').pop(), ...entry };
+        // Rule-based permissions have 90% confidence
+        return { name: perm, shortName: perm.split('.').pop(), ...entry, confidence: 0.9 };
     });
 
-    const riskScore = calculateRiskScore(permissions);
-    const suspiciousCombos = detectSuspiciousCombos(permissions);
+    // Code-level analysis (DEX)
+    let dexAnalysis = null;
+    if (ENABLE_DEX_ANALYSIS && dexBuffer) {
+        dexAnalysis = scanDex(dexBuffer);
+    }
+
     const manifestAnalysis = analyzeManifest(manifestContent);
+
+    // Behavior Simulation
+    let simulations = [];
+    if (ENABLE_BEHAVIOR_SIMULATION) {
+        simulations = simulateBehaviors({
+            permissions: permissionDetails,
+            dexAnalysis,
+            manifestAnalysis,
+            rawManifest: manifestContent
+        });
+    }
+
+    // ML Analysis
+    let mlResult = null;
+    if (ENABLE_ML_SCORING) {
+        mlResult = await adjustScore(permissions);
+    }
+
+    const riskScore = calculateRiskScore(permissions, dexAnalysis, simulations, mlResult, customWeights);
+    const suspiciousCombos = detectSuspiciousCombos(permissions);
     const componentAnalysis = analyzeComponents(manifestContent);
     const metadata = extractMetadata(manifestContent, fileName);
     const domainProfile = categorizeByDomain(permissions);
@@ -42,6 +72,8 @@ export async function analyzeFile(file) {
         manifestAnalysis,
         componentAnalysis,
         domainProfile,
+        dexAnalysis,
+        simulations,
         rawManifest: manifestContent
     };
 }

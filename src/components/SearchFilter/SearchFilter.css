@@ -13,7 +13,7 @@
 }
 
 .search-filter-bar:focus-within {
-    border-color: rgba(122, 90, 248, 0.3);
+    border-color: rgba(61, 220, 132, 0.3);
 }
 
 .search-input {
@@ -62,8 +62,8 @@
 }
 
 .rf-btn.active {
-    background: rgba(122, 90, 248, 0.1);
-    border-color: rgba(122, 90, 248, 0.35);
+    background: rgba(61, 220, 132, 0.1);
+    border-color: rgba(61, 220, 132, 0.35);
     color: var(--accent);
 }
 
@@ -91,7 +91,7 @@
 }
 
 .sort-select:focus {
-    border-color: rgba(122, 90, 248, 0.4);
+    border-color: rgba(61, 220, 132, 0.4);
 }
 
 .sort-select option {

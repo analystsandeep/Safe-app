@@ -15,10 +15,7 @@ export function Header() {
                 </div>
 
                 <nav className="header-nav">
-                    <span className="header-local-badge">
-                        <span className="header-dot" />
-                        100% Local
-                    </span>
+
                     <a
                         className="header-github-link"
                         href="https://github.com/analystsandeep/Safe-app"

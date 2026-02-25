@@ -40,7 +40,7 @@
    ========================================================================== */
 .collapsible {
   border: none;
-  border-left: 2px solid rgba(122, 90, 248, 0.2);
+  border-left: 2px solid rgba(61, 220, 132, 0.2);
   border-radius: 0;
   margin-bottom: 0;
   overflow: hidden;
@@ -50,7 +50,7 @@
 }
 
 .collapsible:hover {
-  border-left-color: rgba(122, 90, 248, 0.6);
+  border-left-color: rgba(61, 220, 132, 0.6);
 }
 
 .collapsible-trigger {

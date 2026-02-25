@@ -1,0 +1,57 @@
+[
+    {
+        "id": "surveillance",
+        "description": "Potential background video/audio surveillance and upload.",
+        "points": 15,
+        "condition": {
+            "permissions": [
+                "CAMERA",
+                "RECORD_AUDIO"
+            ],
+            "combos": [
+                "INTERNET"
+            ],
+            "components": [
+                "BOOT_COMPLETED"
+            ]
+        }
+    },
+    {
+        "id": "exfiltration",
+        "description": "Detected network sinks with storage access – risk of data exfiltration.",
+        "points": 10,
+        "condition": {
+            "permissions": [
+                "READ_EXTERNAL_STORAGE",
+                "WRITE_EXTERNAL_STORAGE"
+            ],
+            "dexPatterns": [
+                "dataSinks"
+            ]
+        }
+    },
+    {
+        "id": "tracking",
+        "description": "Location tracking and identifier access – high risk of user profiling.",
+        "points": 12,
+        "condition": {
+            "permissions": [
+                "ACCESS_FINE_LOCATION",
+                "ACCESS_COARSE_LOCATION"
+            ],
+            "dexPatterns": [
+                "suspiciousStrings"
+            ]
+        }
+    },
+    {
+        "id": "stealth_loading",
+        "description": "Dynamic code loading detected – potential for executing hidden malicious logic.",
+        "points": 20,
+        "condition": {
+            "dexPatterns": [
+                "dynamicLoads"
+            ]
+        }
+    }
+]

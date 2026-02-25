@@ -12,6 +12,12 @@ import {
     HiOutlineCpuChip,
     HiOutlineBookOpen,
     HiOutlineLockClosed,
+    HiOutlineCpuChip as HiBrain,
+    HiOutlineFingerPrint,
+    HiOutlineBellAlert,
+    HiOutlineCheckCircle,
+    HiOutlineExclamationCircle,
+    HiOutlineShieldExclamation
 } from 'react-icons/hi2';
 
 // Re-export all icons for use across the app as a central registry
@@ -28,6 +34,11 @@ export const AppIcons = {
     DataMap: HiOutlineCpuChip,
     BookOpen: HiOutlineBookOpen,
     Lock: HiOutlineLockClosed,
+    Brain: HiBrain,
+    Critical: HiOutlineBellAlert,
+    Success: HiOutlineCheckCircle,
+    Info: HiOutlineExclamationCircle,
+    Security: HiOutlineShieldExclamation
 };
 
 // Domain category icons
@@ -43,10 +54,12 @@ import {
     HiOutlineWifi,
     HiOutlineCog6Tooth,
     HiOutlineCreditCard,
-    HiOutlineFingerPrint,
     HiOutlineMusicalNote,
     HiOutlineGlobeAlt,
     HiOutlineDevicePhoneMobile,
+    HiOutlineMicrophone,
+    HiOutlineEnvelope,
+    HiOutlineWindow,
 } from 'react-icons/hi2';
 
 export const DomainIcons = {
@@ -68,7 +81,26 @@ export const DomainIcons = {
     'Default': HiOutlineShieldCheck,
 };
 
+// Specific Permission Icons for RiskScore and Breakdown
+export const PermissionIcons = {
+    CAMERA: HiOutlineCamera,
+    RECORD_AUDIO: HiOutlineMicrophone,
+    ACCESS_FINE_LOCATION: HiOutlineMapPin,
+    ACCESS_COARSE_LOCATION: HiOutlineMapPin,
+    READ_CONTACTS: HiOutlineUsers,
+    READ_EXTERNAL_STORAGE: HiOutlineCircleStack,
+    WRITE_EXTERNAL_STORAGE: HiOutlineCircleStack,
+    INTERNET: HiOutlineGlobeAlt,
+    RECEIVE_SMS: HiOutlineEnvelope,
+    SEND_SMS: HiOutlineEnvelope,
+    READ_CALL_LOG: HiOutlinePhone,
+    PROCESS_OUTGOING_CALLS: HiOutlinePhone,
+    SYSTEM_ALERT_WINDOW: HiOutlineWindow,
+    DEFAULT: HiOutlineLockClosed,
+};
+
 export function IconBox({ Icon, size = 18, color = 'var(--accent-primary)' }) {
+    if (!Icon) return null;
     return (
         <span className="icon-box" style={{ '--icon-color': color }}>
             <Icon size={size} />

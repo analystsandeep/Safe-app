@@ -39,7 +39,7 @@ export function FileUpload({ onFileSelect, loading, error }) {
                 </h1>
 
                 <p className="hero-sub">
-                    Audit any Android app's permissions, manifest structure, and privacy risks — entirely in your browser. No data leaves your device.
+                    Audit any Android app's permissions, code-level (DEX) behaviors, and AI-simulated privacy risks.
                 </p>
 
             </div>

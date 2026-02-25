@@ -4,12 +4,15 @@ import './TerminalDemo.css';
 const LINES = [
     { prefix: '$', text: 'appranium analyze app-release.apk', type: 'cmd' },
     { prefix: '›', text: 'Extracting AndroidManifest.xml…', type: 'info' },
+    { prefix: '›', text: 'Extracting classes.dex (14.2 MB)…', type: 'info' },
     { prefix: '›', text: 'Parsing 47 permission declarations…', type: 'info' },
-    { prefix: '›', text: 'Analyzing 12 exported components…', type: 'info' },
-    { prefix: '›', text: 'Detecting suspicious permission combos…', type: 'info' },
+    { prefix: '›', text: 'Scanning DEX for localized API patterns…', type: 'info' },
+    { prefix: '›', text: 'Loading TensorFlow.js privacy model…', type: 'info' },
+    { prefix: '›', text: 'Simulating runtime threat behaviors…', type: 'info' },
     { prefix: '!', text: 'Found: LOCATION + BACKGROUND_ACCESS + BOOT_COMPLETED', type: 'warn' },
-    { prefix: '!', text: 'Found: android:debuggable = true', type: 'warn' },
+    { prefix: '!', text: 'Found: Suspicious dynamic class loading detected', type: 'warn' },
     { prefix: '✓', text: 'Risk Score: 7.4 / 10  [HIGH]', type: 'risk' },
+    { prefix: '✓', text: 'AI Confidence: 94.8%', type: 'risk' },
 ];
 
 export function TerminalDemo() {

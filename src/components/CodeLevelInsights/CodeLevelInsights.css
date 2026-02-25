@@ -1,0 +1,72 @@
+.code-level-insights {
+    margin-top: 24px;
+}
+
+.insight-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.insight-icon {
+    font-size: 1.2rem;
+    color: #3498db;
+}
+
+.no-findings-badge {
+    font-size: 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-left: auto;
+    color: #95a5a6;
+}
+
+.no-findings-text {
+    color: #95a5a6;
+    font-style: italic;
+    padding: 16px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
+
+.findings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 8px 0;
+}
+
+.finding-category {
+    background: rgba(52, 152, 219, 0.05);
+    border: 1px solid rgba(52, 152, 219, 0.2);
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.finding-category h4 {
+    margin: 0 0 12px 0;
+    font-size: 0.9rem;
+    color: #3498db;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.finding-category ul {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 0.85rem;
+    color: #ecf0f1;
+}
+
+.finding-category li {
+    margin-bottom: 8px;
+}
+
+.finding-category small {
+    display: block;
+    margin-top: 12px;
+    color: #95a5a6;
+    font-size: 0.75rem;
+    line-height: 1.4;
+}

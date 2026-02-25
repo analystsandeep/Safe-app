@@ -16,9 +16,15 @@ const STEPS = [
     },
     {
         num: '03',
-        title: 'Risk Engine',
-        desc: 'A weighted scoring model aggregates permission severity, suspicious combinations, exported components, and manifest flags into a composite risk score from 0.0–10.0 with a full breakdown by category.',
-        tags: ['Weighted scoring', 'Combo detection', 'Risk 0–10'],
+        title: 'Behavior Simulation',
+        desc: 'Our proprietary simulation engine combines manifest flags with code-level insights to forecast risky runtime behaviors, such as background surveillance or silent data exfiltration.',
+        tags: ['Heuristic engine', 'Threat forecasting', 'Combo simulation'],
+    },
+    {
+        num: '04',
+        title: 'AI & DEX Scoring',
+        desc: 'TensorFlow.js runs deep code scanning (DEX) and ML inference locally. The final risk score is a context-aware grade based on permission vectors and suspicious API usage patterns.',
+        tags: ['TensorFlow.js', 'DEX scanning', 'Neural adjustments'],
     },
 ];
 

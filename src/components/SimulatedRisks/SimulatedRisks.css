@@ -1,0 +1,98 @@
+.simulated-risks {
+    margin-top: 24px;
+}
+
+.sim-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sim-icon {
+    font-size: 1.2rem;
+    color: #e67e22;
+}
+
+.sim-count-badge {
+    font-size: 0.75rem;
+    background: rgba(230, 126, 34, 0.2);
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-left: auto;
+    color: #e67e22;
+}
+
+.simulations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.simulation-item {
+    background: rgba(230, 126, 34, 0.05);
+    border: 1px solid rgba(230, 126, 34, 0.2);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.sim-item-main {
+    display: flex;
+    align-items: flex-start;
+    padding: 16px;
+    gap: 16px;
+}
+
+.sim-warning-icon {
+    font-size: 1.2rem;
+}
+
+.sim-item-content {
+    flex: 1;
+}
+
+.sim-item-content h5 {
+    margin: 0 0 4px 0;
+    color: #e67e22;
+    font-size: 0.95rem;
+}
+
+.sim-item-content p {
+    margin: 0;
+    color: #95a5a6;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+.sim-risk-add {
+    color: #e67e22;
+    font-weight: bold;
+    font-size: 0.8rem;
+    background: rgba(230, 126, 34, 0.1);
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+.sim-item-footer {
+    padding: 8px 16px;
+    background: rgba(0, 0, 0, 0.1);
+    border-top: 1px solid rgba(230, 126, 34, 0.1);
+}
+
+.sim-doc-link {
+    font-size: 0.75rem;
+    color: #95a5a6;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.sim-doc-link:hover {
+    color: #e67e22;
+}
+
+.sim-disclaimer {
+    font-size: 0.7rem;
+    color: #7f8c8d;
+    font-style: italic;
+    text-align: center;
+    margin-top: 8px;
+}

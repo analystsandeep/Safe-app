@@ -1,0 +1,22 @@
+.mouse-glow-container {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.mouse-glow-orb {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle at center,
+            rgba(61, 220, 132, 0.06) 0%,
+            rgba(61, 220, 132, 0.025) 35%,
+            transparent 70%);
+    will-change: transform;
+    pointer-events: none;
+}

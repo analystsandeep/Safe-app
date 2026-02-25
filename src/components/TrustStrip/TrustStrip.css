@@ -44,14 +44,14 @@
 }
 
 .trust-node.active .trust-node-icon {
-    background: rgba(122, 90, 248, 0.1);
-    border-color: rgba(122, 90, 248, 0.3);
+    background: rgba(61, 220, 132, 0.1);
+    border-color: rgba(61, 220, 132, 0.3);
     color: var(--accent);
 }
 
 .trust-node-icon.blocked {
-    background: rgba(122, 30, 44, 0.08);
-    border-color: rgba(122, 30, 44, 0.2);
+    background: rgba(139, 0, 0, 0.08);
+    border-color: rgba(220, 20, 60, 0.2);
     color: var(--risk-critical-text);
 }
 

@@ -8,9 +8,9 @@ import {
 import './RiskCharts.css';
 
 const RISK_PIE_DATA = (breakdown) => [
-    { name: 'High Risk', value: breakdown.high, color: '#ef4444' },
-    { name: 'Medium', value: breakdown.medium, color: '#f59e0b' },
-    { name: 'Low Risk', value: breakdown.low, color: '#22c55e' },
+    { name: 'High Risk', value: breakdown.high, color: '#DC143C' },
+    { name: 'Medium', value: breakdown.medium, color: '#D4A017' },
+    { name: 'Low Risk', value: breakdown.low, color: '#3DDC84' },
     { name: 'Unknown', value: breakdown.unknown, color: '#52525b' },
 ].filter(d => d.value > 0);
 
@@ -31,7 +31,7 @@ const CustomTooltip = ({ active, payload }) => {
     return null;
 };
 
-const TICK = { fill: '#9d9bc0', fontSize: 11, fontFamily: 'Inter' };
+const TICK = { fill: '#8E8E9A', fontSize: 11, fontFamily: 'Plus Jakarta Sans, Inter' };
 
 const InnerLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
     if (percent < 0.08) return null;
@@ -58,18 +58,47 @@ export function RiskCharts({ riskBreakdown, domainProfile }) {
                 <ResponsiveContainer width="100%" height={270}>
                     <PieChart>
                         <defs>
+                            <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+                                <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur" />
+                                <feComponentTransfer in="blur" result="dimmed">
+                                    <feFuncA type="linear" slope="0.4" />
+                                </feComponentTransfer>
+                                <feMerge>
+                                    <feMergeNode in="dimmed" />
+                                    <feMergeNode in="SourceGraphic" />
+                                </feMerge>
+                            </filter>
+
+                            <linearGradient id="glassSheen" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stopColor="#fff" stopOpacity="0.15" />
+                                <stop offset="30%" stopColor="#fff" stopOpacity="0" />
+                                <stop offset="100%" stopColor="#fff" stopOpacity="0" />
+                            </linearGradient>
+
                             {pieData.map((d, i) => (
-                                <radialGradient key={i} id={`pg${i}`} cx="50%" cy="50%" r="50%">
-                                    <stop offset="0%" stopColor={d.color} stopOpacity={0.95} />
-                                    <stop offset="100%" stopColor={d.color} stopOpacity={0.55} />
-                                </radialGradient>
+                                <linearGradient key={i} id={`pg${i}`} x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0%" stopColor={d.color} stopOpacity={0.9} />
+                                    <stop offset="100%" stopColor={d.color} stopOpacity={0.4} />
+                                </linearGradient>
                             ))}
                         </defs>
                         <Pie data={pieData} cx="50%" cy="50%"
                             innerRadius={62} outerRadius={100}
-                            paddingAngle={4} dataKey="value"
-                            label={<InnerLabel />} labelLine={false}>
-                            {pieData.map((e, i) => <Cell key={i} fill={`url(#pg${i})`} stroke={e.color} strokeWidth={1} />)}
+                            paddingAngle={5} dataKey="value"
+                            label={<InnerLabel />} labelLine={false}
+                            stroke="none"
+                        >
+                            {pieData.map((e, i) => (
+                                <Cell
+                                    key={i}
+                                    fill={`url(#pg${i})`}
+                                    style={{
+                                        filter: 'url(#softGlow)',
+                                        cursor: 'pointer',
+                                        transition: 'all 0.3s ease'
+                                    }}
+                                />
+                            ))}
                         </Pie>
                         <Tooltip content={<CustomTooltip />} />
                         <Legend iconType="circle" iconSize={8}
@@ -84,17 +113,22 @@ export function RiskCharts({ riskBreakdown, domainProfile }) {
                         <defs>
                             {barData.map((d, i) => (
                                 <linearGradient key={i} id={`bg${i}`} x1="0" y1="0" x2="1" y2="0">
-                                    <stop offset="0%" stopColor={d.fill} stopOpacity={0.8} />
-                                    <stop offset="100%" stopColor={d.fill} stopOpacity={0.3} />
+                                    <stop offset="0%" stopColor={d.fill} stopOpacity={0.9} />
+                                    <stop offset="100%" stopColor={d.fill} stopOpacity={0.2} />
                                 </linearGradient>
                             ))}
                         </defs>
                         <XAxis type="number" tick={TICK} axisLine={false} tickLine={false} />
                         <YAxis type="category" dataKey="name" width={90} tick={TICK} axisLine={false} tickLine={false} />
-                        <Tooltip content={<CustomTooltip />} />
-                        <Bar dataKey="count" radius={[0, 6, 6, 0]}
-                            label={{ position: 'right', fill: '#9d9bc0', fontSize: 10, fontWeight: 700 }}>
-                            {barData.map((e, i) => <Cell key={i} fill={`url(#bg${i})`} />)}
+                        <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(255,255,255,0.02)' }} />
+                        <Bar dataKey="count" radius={[0, 4, 4, 0]}>
+                            {barData.map((e, i) => (
+                                <Cell
+                                    key={i}
+                                    fill={`url(#bg${i})`}
+                                    style={{ filter: 'url(#softGlow)' }}
+                                />
+                            ))}
                         </Bar>
                     </BarChart>
                 </ResponsiveContainer>

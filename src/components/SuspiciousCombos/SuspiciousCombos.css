@@ -1,3 +1,72 @@
+/* ── ALERT CARD VARIANT ── */
+.combo-card-alert {
+    background: rgba(255, 30, 50, 0.02) !important;
+    border-color: rgba(255, 45, 85, 0.15) !important;
+}
+
+/* ── THREAT BANNER ── */
+.combo-threat-banner {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: rgba(255, 45, 85, 0.07);
+    border: 1px solid rgba(255, 45, 85, 0.2);
+    border-radius: var(--card-radius);
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.combo-threat-icon-premium {
+    font-size: 24px;
+    color: #ff2d55;
+    flex-shrink: 0;
+    animation: threat-pulse 2s ease-in-out infinite;
+    filter: drop-shadow(0 0 8px rgba(255, 45, 85, 0.4));
+}
+
+@keyframes threat-pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.7;
+        transform: scale(1.1);
+    }
+}
+
+.combo-threat-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #ff2d55;
+    margin-bottom: 4px;
+}
+
+.combo-threat-sub {
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    font-family: 'Inter', sans-serif;
+}
+
+.combo-threat-count {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: #ff2d55;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin-left: auto;
+    opacity: 0.8;
+}
+
 /* ── CLEAN STATE ── */
 .combo-clean {
     display: flex;
@@ -14,8 +83,8 @@
 }
 
 .combo-clean-icon {
-    font-size: 1.4rem;
-    flex-shrink: 0;
+    font-size: 22px;
+    color: #3DDC84;
 }
 
 /* ── COMBO LIST ── */
@@ -27,16 +96,20 @@
 
 /* ── COMBO ITEM ── */
 .combo-item {
-    background: rgba(255, 255, 255, 0.025);
+    background: rgba(30, 8, 12, 0.4);
     border-radius: 0 var(--card-radius) var(--card-radius) 0;
     padding: 18px 20px;
-    border: 1px solid var(--border);
-    border-left: 2px solid var(--risk-critical-text);
-    transition: background 0.25s var(--ease-premium), border-color 0.25s;
+    border: 1px solid rgba(255, 45, 85, 0.12);
+    border-left-width: 4px;
+    transition: background 0.25s var(--ease-premium),
+        box-shadow 0.25s var(--ease-premium),
+        border-color 0.25s;
 }
 
 .combo-item:hover {
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(40, 10, 16, 0.6);
+    box-shadow: 0 0 20px rgba(255, 45, 85, 0.08);
+    border-color: rgba(255, 45, 85, 0.2);
 }
 
 .combo-header {
@@ -71,13 +144,19 @@
 }
 
 .combo-perm-pill {
-    background: rgba(122, 30, 44, 0.1);
+    background: rgba(122, 30, 44, 0.15);
     color: var(--risk-critical-text);
-    border: 1px solid rgba(122, 30, 44, 0.25);
+    border: 1px solid rgba(255, 45, 85, 0.25);
     border-radius: 99px;
     padding: 3px 11px;
     font-size: 10.5px;
     font-family: 'JetBrains Mono', monospace;
-    font-weight: 500;
-    letter-spacing: 0.02em;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.combo-perm-pill:hover {
+    background: rgba(122, 30, 44, 0.3);
+    border-color: rgba(255, 45, 85, 0.4);
 }

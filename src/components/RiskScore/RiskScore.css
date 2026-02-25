@@ -19,19 +19,37 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 14px;
+    gap: 12px;
 }
 
 /* Grade badge */
 .grade-badge {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    padding: 12px 28px;
+    padding: 14px 24px;
     border-radius: var(--card-radius);
-    gap: 2px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    gap: 16px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.grade-icon-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.grade-premium-icon {
+    font-size: 32px;
+    color: white;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4));
+}
+
+.grade-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0px;
 }
 
 .grade-letter {
@@ -50,6 +68,98 @@
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.14em;
+}
+
+/* Grade explain button */
+.grade-explain-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 99px;
+    color: var(--text-muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 10.5px;
+    font-weight: 500;
+    padding: 4px 12px;
+    cursor: pointer;
+    transition: all 0.2s var(--ease-premium);
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+}
+
+.grade-explain-btn:hover {
+    border-color: var(--accent-border);
+    color: var(--accent);
+    background: var(--accent-dim);
+}
+
+/* ── GRADE EXPLANATION PANEL ── */
+.grade-explanation-panel {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    animation: fadeInUp 0.3s var(--ease-premium) both;
+}
+
+.gep-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.gep-grade-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 10px;
+    border-radius: 99px;
+    border: 1px solid;
+    flex-shrink: 0;
+}
+
+.gep-title {
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 500;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.gep-text {
+    color: var(--text-secondary);
+    font-size: 13px;
+    line-height: 1.7;
+    margin-bottom: 14px;
+}
+
+.gep-scale {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.gep-grade-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    color: white;
+    opacity: 0.4;
+    transition: opacity 0.2s;
+}
+
+.gep-grade-dot.active {
+    opacity: 1;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
 }
 
 /* ── STATS AREA ── */
@@ -133,4 +243,151 @@
     font-size: 13.5px;
     line-height: 1.7;
     border-left: 2px solid;
+    margin-bottom: 16px;
+}
+
+/* ── TOP RISK DRIVERS ── */
+.risk-drivers {
+    border-top: 1px solid var(--divider);
+    padding-top: 16px;
+}
+
+.risk-drivers-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+.risk-fire-icon {
+    color: #ff2d55;
+    font-size: 14px;
+    filter: drop-shadow(0 0 4px #ff2d5588);
+}
+
+.risk-drivers-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.driver-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.driver-chip:hover {
+    border-color: var(--border-hover);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.driver-icon {
+    font-size: 14px;
+    line-height: 1;
+}
+
+.driver-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: 0.02em;
+}
+
+
+.risk-header-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+}
+
+/* ── ADVANCED SCORES ── */
+.advanced-scores {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px solid var(--divider);
+}
+
+.adv-score-item {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.adv-score-item span.red {
+    color: #ff2d55;
+}
+
+.adv-score-item span.orange {
+    color: #f59e0b;
+}
+
+.adv-score-item span.green {
+    color: #22c55e;
+}
+
+.ml-insight {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.ml-confidence-bar {
+    width: 100%;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+    margin-top: 4px;
+}
+
+.ml-conf-fill {
+    height: 100%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent-glow);
+    transition: width 1s var(--ease-premium);
+}
+
+.ml-conf-text {
+    font-size: 9px;
+    margin-top: 4px;
+    opacity: 0.6;
+    letter-spacing: 0.02em;
+}
+
+/* ── DRIVER CONFIDENCE ── */
+.driver-confidence {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-left: auto;
+    padding-right: 8px;
+}
+
+.conf-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
 }

@@ -1,7 +1,7 @@
 /* ── INFO GRID ── */
 .manifest-info-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
     gap: 10px;
     margin-bottom: 24px;
 }
@@ -13,14 +13,52 @@
     padding: 16px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    align-items: center;
+    gap: 4px;
     text-align: center;
     transition: border-color 0.25s var(--ease-premium), background 0.25s;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Colored top stripe based on status */
+.manifest-info-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--border);
+    transition: background 0.25s;
+}
+
+.mib-status-danger::before {
+    background: #ff2d55;
+}
+
+.mib-status-warn::before {
+    background: #f59e0b;
+}
+
+.mib-status-safe::before {
+    background: #22c55e;
+}
+
+.mib-status-neutral::before {
+    background: var(--accent-border);
 }
 
 .manifest-info-box:hover {
     border-color: var(--border-hover);
     background: rgba(255, 255, 255, 0.035);
+}
+
+.mib-status-icon {
+    font-size: 1.2rem;
+    line-height: 1;
+    margin-bottom: 4px;
+    display: block;
 }
 
 .mib-label {
@@ -45,15 +83,27 @@
 }
 
 .mib-value.warn {
-    color: var(--risk-medium);
+    color: #f59e0b;
 }
 
 .mib-value.safe {
     color: var(--risk-low-text);
 }
 
+.mib-desc {
+    font-size: 10px;
+    color: var(--text-muted);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.4;
+    font-weight: 400;
+    margin-top: 2px;
+}
+
 /* ── CLEAN STATE ── */
 .manifest-clean {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     color: var(--risk-low-text);
     background: rgba(46, 125, 50, 0.07);
     border: 1px solid rgba(46, 125, 50, 0.2);
@@ -62,6 +112,10 @@
     font-weight: 500;
     font-size: 13.5px;
     font-family: 'Inter', sans-serif;
+}
+
+.manifest-clean-icon {
+    font-size: 1.2rem;
 }
 
 /* ── WARNINGS LIST ── */
@@ -75,6 +129,11 @@
     border-radius: 0 var(--card-radius) var(--card-radius) 0;
     padding: 14px 18px;
     border: 1px solid var(--border);
+    transition: background 0.2s;
+}
+
+.manifest-warning-card:hover {
+    border-color: var(--border-hover);
 }
 
 .mwc-header {
@@ -82,6 +141,11 @@
     align-items: center;
     gap: 8px;
     margin-bottom: 8px;
+}
+
+.mwc-sev-icon {
+    font-size: 13px;
+    line-height: 1;
 }
 
 .mwc-severity {

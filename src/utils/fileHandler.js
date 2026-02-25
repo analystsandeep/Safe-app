@@ -1,5 +1,6 @@
 import JSZip from 'jszip';
 import { parseAxml } from './axmlParser.js';
+import { MAX_APK_SIZE_MB } from '../config.js';
 
 /**
  * Handles APK and raw XML file uploads.
@@ -7,16 +8,22 @@ import { parseAxml } from './axmlParser.js';
  * Falls back to string extraction if AXML parser fails.
  *
  * @param {File} file
- * @returns {Promise<{manifestContent: string, fileType: string, fileName: string}>}
+ * @returns {Promise<{manifestContent: string, fileType: string, fileName: string, dexBuffer: ArrayBuffer|null}>}
  */
 export async function handleFile(file) {
     const fileName = file.name;
     const extension = fileName.split('.').pop().toLowerCase();
 
+    // ── File size limit check ───────────────────────────────────────
+    const fileSizeMB = file.size / (1024 * 1024);
+    if (fileSizeMB > MAX_APK_SIZE_MB) {
+        throw new Error(`File size (${fileSizeMB.toFixed(1)}MB) exceeds the limit of ${MAX_APK_SIZE_MB}MB. Please use a smaller APK.`);
+    }
+
     // ── Plain XML file ──────────────────────────────────────────────
     if (extension === 'xml') {
         const text = await file.text();
-        return { manifestContent: text, fileType: 'xml', fileName };
+        return { manifestContent: text, fileType: 'xml', fileName, dexBuffer: null };
     }
 
     // ── APK file ────────────────────────────────────────────────────
@@ -35,6 +42,17 @@ export async function handleFile(file) {
             throw new Error('AndroidManifest.xml not found inside the APK.');
         }
 
+        // Try to get classes.dex
+        let dexBuffer = null;
+        try {
+            const dexEntry = zip.file('classes.dex');
+            if (dexEntry) {
+                dexBuffer = await dexEntry.async('arraybuffer');
+            }
+        } catch (e) {
+            console.warn('Failed to extract classes.dex:', e);
+        }
+
         // Try the AXML binary parser first (uint8array → XML string)
         try {
             const binaryData = await manifestEntry.async('uint8array');
@@ -44,30 +62,30 @@ export async function handleFile(file) {
             if (magic === 0x0003) {
                 const parsed = parseAxml(binaryData);
                 if (parsed && parsed.length > 50) {
-                    return { manifestContent: parsed, fileType: 'apk', fileName };
+                    return { manifestContent: parsed, fileType: 'apk', fileName, dexBuffer };
                 }
             }
 
             // If magic check failed, it might still be binary — try parse anyway
             const parsed = parseAxml(binaryData);
             if (parsed && parsed.length > 50) {
-                return { manifestContent: parsed, fileType: 'apk', fileName };
+                return { manifestContent: parsed, fileType: 'apk', fileName, dexBuffer };
             }
 
             // Fallback: maybe it IS already text XML in the APK
             const textContent = await manifestEntry.async('text');
             if (!isBinaryXml(textContent)) {
-                return { manifestContent: textContent, fileType: 'apk', fileName };
+                return { manifestContent: textContent, fileType: 'apk', fileName, dexBuffer };
             }
 
             // Last resort: string extraction (partial data)
             const fallbackContent = extractReadableStrings(binaryData);
-            return { manifestContent: fallbackContent, fileType: 'apk', fileName };
+            return { manifestContent: fallbackContent, fileType: 'apk', fileName, dexBuffer };
 
         } catch (e) {
             // Parser threw — still try text fallback
             const textContent = await manifestEntry.async('text');
-            return { manifestContent: textContent, fileType: 'apk', fileName };
+            return { manifestContent: textContent, fileType: 'apk', fileName, dexBuffer };
         }
     }
 
