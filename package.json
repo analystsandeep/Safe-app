@@ -22,6 +22,10 @@
     "dev": "vite",
     "build": "node node_modules/vite/bin/vite.js build",
     "vercel-build": "node node_modules/vite/bin/vite.js build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "vitest": "^4.0.18"
   }
 }

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import './FileUpload.css';
 
 export function FileUpload({ onFileSelect, loading, error }) {
@@ -27,6 +27,29 @@ export function FileUpload({ onFileSelect, loading, error }) {
         if (e.key === 'Enter' || e.key === ' ') document.getElementById('file-input').click();
     };
 
+    const [loadingTextIndex, setLoadingTextIndex] = useState(0);
+
+    const loadingMessages = [
+        "Ingesting APK Securely...",
+        "Decompressing Archive...",
+        "Extracting AndroidManifest.xml...",
+        "Parsing Binary AXML...",
+        "Scanning DEX Bytecode...",
+        "Simulating High-Risk Behaviors...",
+        "Computing Intelligence Score..."
+    ];
+
+    useEffect(() => {
+        let interval;
+        if (loading) {
+            setLoadingTextIndex(0); // reset on start
+            interval = setInterval(() => {
+                setLoadingTextIndex((prev) => (prev + 1) % loadingMessages.length);
+            }, 800); // Change text every 800ms to signify quick, active processing
+        }
+        return () => clearInterval(interval);
+    }, [loading]);
+
     return (
         <div className="upload-module">
             <div className="upload-backlight" />
@@ -54,8 +77,8 @@ export function FileUpload({ onFileSelect, loading, error }) {
                 {loading ? (
                     <div className="upload-loading">
                         <div className="spinner" />
-                        <p className="upload-loading-text">Analyzing manifest…</p>
-                        <p className="upload-loading-sub">Classifying permissions & risks</p>
+                        <p className="upload-loading-text">{loadingMessages[loadingTextIndex]}</p>
+                        <p className="upload-loading-sub">Zero-Knowledge Context Parsing</p>
                     </div>
                 ) : (
                     <>

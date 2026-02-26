@@ -33,10 +33,27 @@ export function calculateRiskScore(permissions, dexAnalysis = null, simulations 
     // ── Code-level (DEX) scoring ────────────────────────────────────
     let dexScore = 0;
     if (dexAnalysis) {
-        dexScore += (dexAnalysis.runtimePerms?.length || 0) * 15;
-        dexScore += (dexAnalysis.dynamicLoads?.length || 0) * 20;
-        dexScore += (dexAnalysis.dataSinks?.length || 0) * 10;
-        dexScore += (dexAnalysis.suspiciousStrings?.length || 0) * 5;
+        // The new robust worker provides a calculated scoreContribution based on exact methods/strings found.
+        if (dexAnalysis.scoreContribution) {
+            dexScore += dexAnalysis.scoreContribution || 0;
+
+            // Check for dangerous permission + behavior combinations
+            // Example: CAMERA permission + AudioRecord usage
+            const hasCameraPerm = permissions.includes('android.permission.CAMERA');
+            const hasAudioRecord = dexAnalysis.riskyMethods?.some(m => m.includes('AudioRecord->startRecording'));
+            const hasInternet = permissions.includes('android.permission.INTERNET');
+
+            if (hasCameraPerm && hasInternet && hasAudioRecord) {
+                // Highly dangerous "Spyware-like" combi: records audio, accesses camera, has network
+                dexScore += 30; // heavy penalty
+            }
+        } else {
+            // Fallback for legacy scanner
+            dexScore += (dexAnalysis.runtimePerms?.length || 0) * 15;
+            dexScore += (dexAnalysis.dynamicLoads?.length || 0) * 20;
+            dexScore += (dexAnalysis.dataSinks?.length || 0) * 10;
+            dexScore += (dexAnalysis.suspiciousStrings?.length || 0) * 5;
+        }
     }
 
     // ── Simulation scoring ──────────────────────────────────────────

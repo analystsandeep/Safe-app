@@ -8,7 +8,7 @@ import { extractMetadata } from './metadataExtractor.js';
 import { categorizeByDomain } from './domainCategorizer.js';
 import PERMISSION_DATABASE from '../data/permissionDatabase.js';
 
-import { scanDex } from './dexScanner.js';
+import { scanDexWorkerFriendly } from './dexScanner.js';
 import { simulateBehaviors } from './simulationEngine.js';
 import { adjustScore } from './mlRiskModel.js';
 import { ENABLE_DEX_ANALYSIS, ENABLE_BEHAVIOR_SIMULATION, ENABLE_ML_SCORING } from '../config.js';
@@ -31,7 +31,49 @@ export async function analyzeFile(file, customWeights = null) {
     // Code-level analysis (DEX)
     let dexAnalysis = null;
     if (ENABLE_DEX_ANALYSIS && dexBuffer) {
-        dexAnalysis = scanDex(dexBuffer);
+        // Run DEX analysis in a background Web Worker
+        dexAnalysis = await new Promise((resolve) => {
+            try {
+                // Determine path based on environment (Vite handles new URL)
+                const workerUrl = new URL('../workers/dexWorker.js', import.meta.url).href;
+
+                // Workaround for some Vite/Vitest environments where Worker might not exist
+                if (typeof Worker === 'undefined') {
+                    import('./dexScanner.js').then(({ scanDexWorkerFriendly }) => {
+                        resolve(scanDexWorkerFriendly(dexBuffer));
+                    }).catch(err => {
+                        console.error("DEX fallback failed", err);
+                        resolve(null);
+                    });
+                    return;
+                }
+
+                const worker = new Worker(workerUrl, { type: 'module' });
+                worker.onmessage = (e) => {
+                    const { status, findings, error } = e.data;
+                    if (status === 'SUCCESS') {
+                        resolve(findings);
+                    } else {
+                        console.error('DEX Worker Error:', error);
+                        resolve(null);
+                    }
+                    worker.terminate();
+                };
+                worker.onerror = (err) => {
+                    console.error('DEX Worker caught standard error:', err);
+                    resolve(null);
+                    worker.terminate();
+                };
+                worker.postMessage({ type: 'SCAN_DEX', dexBuffer });
+            } catch (err) {
+                console.error('Failed to spawn DEX worker fallback:', err);
+
+                // Fallback for tests or unsupported environments
+                import('./dexScanner.js').then(({ scanDexWorkerFriendly }) => {
+                    resolve(scanDexWorkerFriendly(dexBuffer));
+                }).catch(() => resolve(null));
+            }
+        });
     }
 
     const manifestAnalysis = analyzeManifest(manifestContent);
