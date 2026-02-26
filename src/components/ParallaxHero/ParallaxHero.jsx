@@ -177,7 +177,7 @@ export function ParallaxHero({ children }) {
                         </h1>
                         <p className="hero-sub">
                             Audit any Android app's permissions, code-level DEX behaviors, and AI-simulated
-                            privacy risks — entirely in your browser. Zero uploads. Zero accounts.
+                            privacy risks.
                         </p>
                         <div className="hero-stats">
                             <div className="hero-stat">
