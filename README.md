@@ -16,7 +16,7 @@ Appranium performs true binary analysis **entirely in your browser**. It is not 
 1. **File Ingestion:** When an APK is dragged into the app, the HTML5 File API reads it directly into the local memory of the browser instance. No external network request is established.
 2. **In-Memory Extraction:** Utilizing `jszip`, the engine decompresses the APK archive to isolate critical components, specifically `AndroidManifest.xml` and `classes.dex`.
 3. **Binary AXML Decompilation:** Android apps compile XML into binary formats (AXML). Appranium features a custom JavaScript `axmlParser` that reconstructs the binary string pool and XML tree structure to extract declared permissions, application metadata, and manifest configurations.
-4. **DEX Byte-Code Scanning:** The system runs heuristic pattern-matching over the Dalvik Executable (`classes.dex`). It searches for string constants and low-level system API calls that indicate hidden behaviors (e.g., dynamic code loading, background tracking).
+4. **True-Binary DEX Byte-Code Parsing:** The system performs structural binary parsing on the Dalvik Executable (`classes.dex`). Utilizing a custom `DataView` engine, it deserializes the DEX header, decodes ULEB128 strings, and maps exact `ClassName->methodName` invocations. It actively flags dynamic code loading (`DexClassLoader`), reflection abuse (`Method.invoke`), shell commands (`Runtime.exec`), and deep hardware invocations (e.g. `AudioRecord`).
 5. **Contextual Risk Intelligence:** Extracted datasets are fed into a weighted scoring matrix. The engine correlates declared permissions against DEX findings and flags **suspicious combinations** (e.g., recording audio alongside hidden network access) to produce a precise, transparent security grade.
 
 ---
