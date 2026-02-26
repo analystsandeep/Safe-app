@@ -8,21 +8,6 @@
 [![Three.js](https://img.shields.io/badge/Three.js-r160-black?style=flat&logo=three.js)](https://threejs.org/)
 [![Privacy](https://img.shields.io/badge/privacy-100%25%20local-brightgreen?style=flat)](#-privacy-first-architecture)
 
----
-
-## See it in Action
-
-*(Note: Replace placeholder paths with actual image routes once added to `/docs` or `/public`)*
-
-**Landing Experience**
-![Appranium Landing Experience](./docs/landing-hero.png)
-*Cinematic, parallax-driven landing experience with 3D interactions.*
-
-**Security Intelligence Report**
-![Deep Security Analysis](./docs/analysis-report.png)
-*Actionable intelligence: Detailed risk scoring, permission breakdowns, and AI-simulated insights.*
-
----
 
 ## How the Analysis Works (Under the Hood)
 
