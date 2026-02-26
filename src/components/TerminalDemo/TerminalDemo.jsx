@@ -11,7 +11,7 @@ const LINES = [
     { prefix: '›', text: 'Simulating runtime threat behaviors…', type: 'info' },
     { prefix: '!', text: 'Found: LOCATION + BACKGROUND_ACCESS… [HIGH RISK]', type: 'warn' },
     { prefix: '!', text: 'Found: Suspicious dynamic class loading detected', type: 'warn' },
-    { prefix: '✓', text: 'Risk Score: 7.4 / 10  [HIGH]', type: 'risk' },
+    { prefix: '✓', text: 'Risk Score: 74 / 100  [HIGH]', type: 'risk' },
     { prefix: '✓', text: 'AI Confidence: 94.8%', type: 'risk' },
 ];
 
