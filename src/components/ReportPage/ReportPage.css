@@ -1,0 +1,1231 @@
+/* ==========================================================================
+   REPORT PAGE — Cinematic 3D redesign
+   ========================================================================== */
+
+/* ══ ROOT ════════════════════════════════════════════════════════════════ */
+.rp-root {
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* ══ CINEMATIC HERO ══════════════════════════════════════════════════════ */
+.rp-hero {
+    position: relative;
+    min-height: 480px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    overflow: hidden;
+    padding: 80px 40px 0;
+    margin-bottom: 0;
+}
+
+/* Background grid */
+.rp-hero-grid {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+        linear-gradient(rgba(61, 220, 132, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(61, 220, 132, 0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    z-index: 0;
+}
+
+/* Ambient colour blob */
+.rp-hero-blob {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    transition: background 0.8s ease;
+}
+
+/* ── SPINNING RINGS ──────────────────────────────────────────────────────*/
+.rp-rings {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rp-ring {
+    position: absolute;
+    border-radius: 50%;
+    border-style: solid;
+    will-change: transform;
+}
+
+.rp-ring-1 {
+    width: 440px;
+    height: 440px;
+    border-width: 1px;
+    animation: rp-spin-cw 18s linear infinite;
+    opacity: 0.5;
+}
+
+.rp-ring-2 {
+    width: 320px;
+    height: 320px;
+    border-width: 1px;
+    border-style: dashed;
+    animation: rp-spin-ccw 12s linear infinite;
+    opacity: 0.4;
+}
+
+.rp-ring-3 {
+    width: 220px;
+    height: 220px;
+    border-width: 1px;
+    animation: rp-spin-cw 8s linear infinite;
+    opacity: 0.35;
+}
+
+.rp-ring-4 {
+    width: 560px;
+    height: 560px;
+    border-width: 1px;
+    border-style: dashed;
+    animation: rp-spin-ccw 28s linear infinite;
+    opacity: 0.15;
+}
+
+@keyframes rp-spin-cw {
+    from {
+        transform: rotate(0deg) rotateX(70deg);
+    }
+
+    to {
+        transform: rotate(360deg) rotateX(70deg);
+    }
+}
+
+@keyframes rp-spin-ccw {
+    from {
+        transform: rotate(0deg) rotateX(70deg);
+    }
+
+    to {
+        transform: rotate(-360deg) rotateX(70deg);
+    }
+}
+
+/* Orbiting dots */
+.rp-orbit {
+    position: absolute;
+    border-radius: 50%;
+    animation: orbit-spin linear infinite;
+    transform-origin: center;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.rp-orbit-1 {
+    width: 320px;
+    height: 320px;
+    animation-duration: 5s;
+}
+
+.rp-orbit-2 {
+    width: 440px;
+    height: 440px;
+    animation-duration: 9s;
+    animation-direction: reverse;
+}
+
+@keyframes orbit-spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.rp-orbit-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--orbit-color);
+    box-shadow: 0 0 12px var(--orbit-color), 0 0 24px var(--orbit-color);
+    margin-top: -5px;
+}
+
+/* ── BACK BUTTON ─────────────────────────────────────────────────────── */
+.rp-back-btn {
+    position: absolute;
+    top: 20px;
+    left: 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    transition: all 0.25s var(--ease-premium);
+    z-index: 20;
+    backdrop-filter: blur(8px);
+}
+
+.rp-back-btn:hover {
+    border-color: var(--accent-border);
+    color: var(--accent);
+    background: var(--accent-dim);
+}
+
+/* ── HERO CENTRE ─────────────────────────────────────────────────────── */
+.rp-hero-centre {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    padding-top: 20px;
+}
+
+/* Grade orb */
+.rp-grade-orb {
+    position: relative;
+    width: 148px;
+    height: 148px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%,
+            color-mix(in srgb, var(--grade-color) 25%, transparent),
+            color-mix(in srgb, var(--grade-color) 8%, transparent) 60%,
+            rgba(0, 0, 0, 0.4) 100%);
+    border: 2px solid var(--grade-color);
+    box-shadow:
+        0 0 0 8px color-mix(in srgb, var(--grade-color) 10%, transparent),
+        0 0 40px color-mix(in srgb, var(--grade-color) 35%, transparent),
+        0 0 80px color-mix(in srgb, var(--grade-color) 18%, transparent),
+        inset 0 2px 0 rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.08s linear, filter 0.08s linear;
+    will-change: transform;
+    animation: orb-idle 4s ease-in-out infinite;
+}
+
+@keyframes orb-idle {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 8px color-mix(in srgb, var(--grade-color) 10%, transparent), 0 0 40px color-mix(in srgb, var(--grade-color) 35%, transparent), 0 0 80px color-mix(in srgb, var(--grade-color) 18%, transparent), inset 0 2px 0 rgba(255, 255, 255, 0.15);
+    }
+
+    50% {
+        box-shadow: 0 0 0 12px color-mix(in srgb, var(--grade-color) 14%, transparent), 0 0 60px color-mix(in srgb, var(--grade-color) 50%, transparent), 0 0 120px color-mix(in srgb, var(--grade-color) 25%, transparent), inset 0 2px 0 rgba(255, 255, 255, 0.2);
+    }
+}
+
+/* Scan arc rotating around the orb */
+.rp-grade-scan {
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    border-top-color: var(--grade-color);
+    animation: orb-scan 2.2s linear infinite;
+    opacity: 0.7;
+}
+
+@keyframes orb-scan {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.rp-grade-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.rp-grade-letter {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 56px;
+    font-weight: 900;
+    line-height: 1;
+    color: var(--grade-color);
+    filter: drop-shadow(0 0 16px var(--grade-glow));
+    letter-spacing: -0.04em;
+}
+
+.rp-grade-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--grade-color);
+    opacity: 0.8;
+}
+
+/* Hero info below orb */
+.rp-hero-info {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.rp-app-name {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(22px, 3vw, 36px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: #ffffff;
+    background: linear-gradient(180deg, #fff 0%, #c8c8c8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0;
+}
+
+.rp-app-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.rp-meta-pill {
+    background: rgba(61, 220, 132, 0.12);
+    color: var(--accent);
+    border: 1px solid rgba(61, 220, 132, 0.25);
+    border-radius: 99px;
+    padding: 3px 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+}
+
+.rp-meta-mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+/* ── HERO STATS BAR ──────────────────────────────────────────────────── */
+.rp-hero-stats {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-bottom: none;
+    border-radius: 16px 16px 0 0;
+    padding: 24px 40px;
+    width: 100%;
+    max-width: 860px;
+    margin: 32px auto 0;
+    justify-content: center;
+}
+
+.rp-hero-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 0 28px;
+}
+
+.rp-hs-num {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1;
+    letter-spacing: -0.03em;
+}
+
+.rp-hs-unit {
+    font-size: 16px;
+    opacity: 0.5;
+}
+
+.rp-hs-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.rp-hs-div {
+    width: 1px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.07);
+    flex-shrink: 0;
+}
+
+/* ══ BENTO GRID ══════════════════════════════════════════════════════════ */
+.rp-bento {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: auto;
+    gap: 16px;
+    padding: 16px 0 80px;
+}
+
+/* Score card takes 1 col, AI takes 1 col, Identity takes 1 col (row 1) */
+.rp-card-score {
+    grid-column: span 1;
+}
+
+.rp-card-ai {
+    grid-column: span 1;
+}
+
+.rp-card-identity {
+    grid-column: span 1;
+}
+
+/* Threats spans full width row */
+.rp-card-threats {
+    grid-column: span 3;
+}
+
+/* High risk perms spans 2, sims spans 1 */
+.rp-card-perms-high {
+    grid-column: span 2;
+}
+
+.rp-card-sims {
+    grid-column: span 1;
+}
+
+/* DEX and all-perms span full width */
+.rp-card-dex {
+    grid-column: span 3;
+}
+
+.rp-card-all-perms {
+    grid-column: span 3;
+}
+
+
+/* ── BENTO BASE CARD ──────────────────────────────────────────────────── */
+.rp-bento-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 16px;
+    padding: 24px;
+    overflow: hidden;
+    position: relative;
+    transition: border-color 0.3s var(--ease-premium), transform 0.3s var(--ease-premium), box-shadow 0.3s var(--ease-premium);
+}
+
+/* Top-edge shine */
+.rp-bento-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 16px;
+    right: 16px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    border-radius: 99px;
+}
+
+.rp-bento-card:hover {
+    border-color: rgba(255, 255, 255, 0.12);
+    transform: translateY(-2px);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(61, 220, 132, 0.06);
+}
+
+
+
+/* ── CARD HEADER ─────────────────────────────────────────────────────── */
+.rp-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+}
+
+.rp-card-icon {
+    font-size: 18px;
+    color: var(--accent);
+    opacity: 0.8;
+    flex-shrink: 0;
+}
+
+/* ── SCORE CARD ──────────────────────────────────────────────────────── */
+.rp-score-gauge-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.rp-score-arc {
+    position: relative;
+    width: 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.rp-arc-svg {
+    width: 100%;
+    overflow: visible;
+}
+
+.rp-arc-label {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 2px;
+    margin-top: -6px;
+}
+
+.rp-arc-num {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.rp-arc-unit {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.rp-breakdown-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.rp-bar-row {
+    display: grid;
+    grid-template-columns: 58px 1fr 28px;
+    align-items: center;
+    gap: 10px;
+}
+
+.rp-bar-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.03em;
+}
+
+.rp-bar-track {
+    height: 5px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.rp-bar-fill {
+    height: 100%;
+    border-radius: 99px;
+    min-width: 2px;
+    transition: width 1s var(--ease-premium);
+}
+
+.rp-bar-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    text-align: right;
+}
+
+/* ── AI CARD ─────────────────────────────────────────────────────────── */
+.rp-ai-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.rp-ai-tile {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    padding: 14px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.rp-ai-tile:hover {
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateY(-2px);
+}
+
+.rp-ai-tile-icon {
+    font-size: 20px;
+}
+
+.rp-ai-tile-val {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.rp-ai-tile-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.rp-confidence-block {
+    margin-bottom: 14px;
+}
+
+.rp-conf-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+}
+
+.rp-conf-track {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.rp-conf-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3DDC84, #63E8A0);
+    border-radius: 99px;
+    box-shadow: 0 0 8px rgba(61, 220, 132, 0.5);
+    transition: width 1s var(--ease-premium);
+}
+
+.rp-ai-explanation {
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: var(--text-muted);
+    margin: 0;
+    border-top: 1px solid var(--divider);
+    padding-top: 12px;
+}
+
+/* ── IDENTITY CARD ───────────────────────────────────────────────────── */
+.rp-identity-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.rp-id-row {
+    display: grid;
+    grid-template-columns: 20px 68px 1fr;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--divider);
+}
+
+.rp-id-row:last-child {
+    border-bottom: none;
+}
+
+.rp-id-icon {
+    font-size: 15px;
+    color: var(--text-muted);
+}
+
+.rp-id-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.rp-id-value {
+    font-size: 12.5px;
+    color: var(--text-primary);
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.rp-id-value.mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+}
+
+/* ── THREATS CARD ────────────────────────────────────────────────────── */
+.rp-threat-count {
+    margin-left: auto;
+    background: rgba(255, 45, 85, 0.15);
+    color: #ff2d55;
+    border-radius: 99px;
+    padding: 2px 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    border: 1px solid rgba(255, 45, 85, 0.3);
+}
+
+.rp-threat-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.rp-threat-item {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-left: 3px solid var(--t-color);
+    border-radius: 10px;
+    padding: 14px;
+    transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.rp-threat-item:hover {
+    background: rgba(255, 255, 255, 0.04);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.rp-threat-item-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.rp-threat-icon {
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.rp-threat-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    flex: 1;
+    line-height: 1.3;
+}
+
+.rp-threat-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    border: 1px solid;
+    border-radius: 4px;
+    padding: 2px 6px;
+    flex-shrink: 0;
+}
+
+.rp-threat-reason {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0 0 10px;
+}
+
+.rp-threat-perms {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.rp-threat-perm {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    padding: 2px 7px;
+    color: var(--text-muted);
+}
+
+/* ── CLEAN STATE ─────────────────────────────────────────────────────── */
+.rp-card-clean {
+    border-color: rgba(34, 197, 94, 0.15);
+}
+
+.rp-clean-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 40px 20px;
+    color: var(--text-muted);
+    font-size: 13px;
+    text-align: center;
+}
+
+.rp-clean-state.small {
+    padding: 24px 12px;
+}
+
+.rp-clean-icon {
+    font-size: 32px;
+    color: #22c55e;
+}
+
+.rp-clean-icon.small {
+    font-size: 22px;
+}
+
+/* ── HIGH RISK PERMS CARD ────────────────────────────────────────────── */
+.rp-perm-count-badge {
+    margin-left: auto;
+    border-radius: 99px;
+    padding: 2px 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.rp-perm-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.rp-perm-row {
+    display: grid;
+    grid-template-columns: 10px 1fr auto;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    transition: background 0.2s ease;
+}
+
+.rp-perm-row:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.rp-perm-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-top: 4px;
+    flex-shrink: 0;
+}
+
+.rp-perm-body {
+    min-width: 0;
+}
+
+.rp-perm-name {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: block;
+    margin-bottom: 2px;
+}
+
+.rp-perm-desc {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin: 0;
+}
+
+.rp-perm-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    border: 1px solid;
+    border-radius: 4px;
+    padding: 2px 6px;
+    white-space: nowrap;
+    text-transform: uppercase;
+    flex-shrink: 0;
+}
+
+.rp-perm-more {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-align: center;
+    padding: 8px 0 0;
+    margin: 0;
+}
+
+/* ── SIMULATED RISKS ─────────────────────────────────────────────────── */
+.rp-sim-badge {
+    margin-left: auto;
+    background: rgba(245, 158, 11, 0.12);
+    color: #f59e0b;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: 99px;
+    padding: 2px 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.rp-sim-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.rp-sim-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+}
+
+.rp-sim-icon-wrap {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    color: #f59e0b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.rp-sim-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.rp-sim-desc {
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0 0 4px;
+}
+
+.rp-sim-pts {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #f59e0b;
+    background: rgba(245, 158, 11, 0.1);
+    border-radius: 4px;
+    padding: 1px 6px;
+}
+
+/* ── DEX CARD ────────────────────────────────────────────────────────── */
+.rp-dex-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.rp-dex-tile {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    padding: 14px;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.rp-dex-tile:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-2px);
+}
+
+.rp-dex-tile-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.rp-dex-count {
+    margin-left: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.rp-dex-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.rp-dex-list li {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 4px;
+    padding: 3px 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.rp-dex-more {
+    color: rgba(255, 255, 255, 0.25) !important;
+    font-style: italic;
+}
+
+/* ── ALL PERMS CARD ──────────────────────────────────────────────────── */
+.rp-all-perms {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.rp-perm-group {
+    border: none;
+}
+
+.rp-perm-group-hd {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    list-style: none;
+    transition: background 0.2s ease;
+    margin-bottom: 8px;
+}
+
+.rp-perm-group-hd::-webkit-details-marker {
+    display: none;
+}
+
+.rp-perm-group-hd:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.rp-pg-count {
+    margin-left: auto;
+    border-radius: 99px;
+    padding: 2px 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.rp-perm-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 8px;
+    padding-bottom: 12px;
+}
+
+.rp-pg-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid;
+    border-radius: 10px;
+    padding: 12px;
+    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    transform-style: preserve-3d;
+}
+
+.rp-pg-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: perspective(400px) rotateY(3deg) translateZ(4px);
+    box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.rp-pg-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: block;
+    margin-bottom: 4px;
+}
+
+.rp-pg-desc {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin: 0 0 6px;
+}
+
+.rp-pg-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 4px;
+    padding: 1px 6px;
+}
+
+/* ══ RESPONSIVE ══════════════════════════════════════════════════════════ */
+@media (max-width: 1100px) {
+    .rp-bento {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .rp-card-threats {
+        grid-column: span 2;
+    }
+
+    .rp-card-perms-high {
+        grid-column: span 2;
+    }
+
+    .rp-card-sims {
+        grid-column: span 2;
+    }
+
+    .rp-card-dex {
+        grid-column: span 2;
+    }
+
+    .rp-card-all-perms {
+        grid-column: span 2;
+    }
+
+    .rp-dex-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 720px) {
+    .rp-hero {
+        padding: 70px 16px 0;
+    }
+
+    .rp-bento {
+        grid-template-columns: 1fr;
+        padding: 12px 0 60px;
+        gap: 12px;
+    }
+
+    .rp-card-score,
+    .rp-card-ai,
+    .rp-card-identity,
+    .rp-card-threats,
+    .rp-card-perms-high,
+    .rp-card-sims,
+    .rp-card-dex,
+    .rp-card-all-perms {
+        grid-column: span 1;
+    }
+
+    .rp-hero-stats {
+        flex-wrap: wrap;
+        padding: 16px 20px;
+        border-radius: 12px;
+        margin: 20px 0 0;
+        justify-content: flex-start;
+        max-width: 100%;
+    }
+
+    .rp-hero-stat {
+        padding: 10px 16px;
+        flex: 0 0 50%;
+    }
+
+    .rp-hs-div {
+        display: none;
+    }
+
+    .rp-hs-num {
+        font-size: 22px;
+    }
+
+    .rp-grade-orb {
+        width: 110px;
+        height: 110px;
+    }
+
+    .rp-grade-letter {
+        font-size: 40px;
+    }
+
+    .rp-ring-1,
+    .rp-ring-4,
+    .rp-orbit-2 {
+        display: none;
+    }
+
+    .rp-dex-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .rp-perm-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .rp-hero-stat {
+        flex: 0 0 100%;
+    }
+
+    .rp-ai-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .rp-dex-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .rp-bento-card {
+        padding: 16px;
+    }
+}

@@ -1,6 +1,6 @@
 /* ── SECTION ── */
 .wa-section {
-    padding: 60px 0 80px;
+    padding: 100px 0 120px;
     border-top: 1px solid var(--divider);
 }
 
@@ -22,11 +22,14 @@
 
 .wa-title {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 2rem;
+    font-size: 40px;
     font-weight: 700;
-    color: var(--text-primary);
     letter-spacing: -0.03em;
     margin-bottom: 14px;
+    background: linear-gradient(180deg, #F5F5F7 0%, #B5B5BD 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .wa-sub {

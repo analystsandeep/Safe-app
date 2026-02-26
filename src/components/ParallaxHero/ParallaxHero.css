@@ -1,66 +1,621 @@
+/* ==========================================================================
+   PARALLAX HERO — Deep 3D parallax with floating geometric scene
+   ========================================================================== */
+
 .parallax-hero-wrap {
     position: relative;
-    overflow: visible;
+    overflow: clip;
+    min-height: calc(100vh - 56px);
+    display: flex;
+    align-items: center;
+    padding: 0;
 }
 
-.parallax-midground {
+/* ── BACKGROUND GRID ──────────────────────────────────────────────────── */
+.parallax-grid {
     position: absolute;
-    inset: -60px;
+    inset: -40px;
     pointer-events: none;
     z-index: 0;
+    will-change: transform;
+}
+
+.parallax-grid-line {
+    position: absolute;
+    background: rgba(61, 220, 132, 0.035);
+}
+
+.parallax-grid-line--v {
+    width: 1px;
+    top: 0;
+    bottom: 0;
+}
+
+.parallax-grid-line--h {
+    height: 1px;
+    left: 0;
+    right: 0;
+}
+
+/* ── AMBIENT GRADIENT BLOBS ───────────────────────────────────────────── */
+.parallax-bg-blobs {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    will-change: transform;
+    background:
+        radial-gradient(ellipse 55% 50% at 15% 30%, rgba(61, 220, 132, 0.09) 0%, transparent 60%),
+        radial-gradient(ellipse 45% 45% at 85% 70%, rgba(61, 220, 132, 0.05) 0%, transparent 55%),
+        radial-gradient(ellipse 30% 30% at 60% 10%, rgba(61, 220, 132, 0.07) 0%, transparent 50%);
+}
+
+/* ── 3D FLOATING SHAPES LAYER ─────────────────────────────────────────── */
+.parallax-3d-scene {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    perspective: 1200px;
+    transform-style: preserve-3d;
+}
+
+/* Large rotating ring behind upload card */
+.shape-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(61, 220, 132, 0.18);
+    box-shadow:
+        0 0 30px rgba(61, 220, 132, 0.08),
+        inset 0 0 30px rgba(61, 220, 132, 0.04);
+}
+
+.shape-ring-1 {
+    width: 420px;
+    height: 420px;
+    top: 50%;
+    right: 18%;
+    transform: translate(50%, -50%);
+    animation: ring-spin-1 14s linear infinite;
+    border-width: 1px;
+    border-style: dashed;
+}
+
+.shape-ring-2 {
+    width: 280px;
+    height: 280px;
+    top: 50%;
+    right: 18%;
+    transform: translate(50%, -50%);
+    animation: ring-spin-2 9s linear infinite reverse;
+    border-style: solid;
+    border-color: rgba(61, 220, 132, 0.12);
+}
+
+.shape-ring-3 {
+    width: 160px;
+    height: 160px;
+    top: 50%;
+    right: 18%;
+    transform: translate(50%, -50%);
+    animation: ring-spin-1 6s linear infinite;
+    border-color: rgba(61, 220, 132, 0.25);
+    box-shadow: 0 0 20px rgba(61, 220, 132, 0.15), inset 0 0 20px rgba(61, 220, 132, 0.05);
+}
+
+@keyframes ring-spin-1 {
+    from {
+        transform: translate(50%, -50%) rotate3d(1, 0.5, 0, 0deg);
+    }
+
+    to {
+        transform: translate(50%, -50%) rotate3d(1, 0.5, 0, 360deg);
+    }
+}
+
+@keyframes ring-spin-2 {
+    from {
+        transform: translate(50%, -50%) rotate3d(0.3, 1, 0.2, 0deg);
+    }
+
+    to {
+        transform: translate(50%, -50%) rotate3d(0.3, 1, 0.2, 360deg);
+    }
+}
+
+/* Floating 3D cubes */
+.shape-cube {
+    position: absolute;
+    transform-style: preserve-3d;
+    animation: cube-float 8s ease-in-out infinite;
+}
+
+.shape-cube-1 {
+    width: 28px;
+    height: 28px;
+    top: 20%;
+    left: 12%;
+    animation-delay: 0s;
+}
+
+.shape-cube-2 {
+    width: 18px;
+    height: 18px;
+    top: 70%;
+    left: 25%;
+    animation-delay: -3s;
+    animation-duration: 6s;
+}
+
+.shape-cube-3 {
+    width: 22px;
+    height: 22px;
+    top: 35%;
+    left: 75%;
+    animation-delay: -5s;
+    animation-duration: 10s;
+}
+
+.shape-cube-4 {
+    width: 14px;
+    height: 14px;
+    top: 82%;
+    left: 60%;
+    animation-delay: -2s;
+    animation-duration: 7s;
+}
+
+.shape-cube-5 {
+    width: 32px;
+    height: 32px;
+    top: 15%;
+    left: 55%;
+    animation-delay: -7s;
+    animation-duration: 11s;
+}
+
+.shape-cube::before,
+.shape-cube::after {
+    content: '';
+    display: block;
+    background: transparent;
+    border: 1.5px solid rgba(61, 220, 132, 0.35);
+    border-radius: 3px;
+    animation: cube-inner-spin 5s linear infinite;
+}
+
+.shape-cube::before {
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 10px rgba(61, 220, 132, 0.2);
+}
+
+.shape-cube::after {
+    position: absolute;
+    inset: 4px;
+    border-color: rgba(61, 220, 132, 0.2);
+    animation-direction: reverse;
+    animation-duration: 3s;
+}
+
+@keyframes cube-float {
+
+    0%,
+    100% {
+        transform: translateY(0px) rotate(0deg) rotate3d(1, 1, 0, 0deg);
+    }
+
+    25% {
+        transform: translateY(-18px) rotate(5deg) rotate3d(1, 1, 0, 90deg);
+    }
+
+    50% {
+        transform: translateY(-30px) rotate(10deg) rotate3d(1, 1, 0, 180deg);
+    }
+
+    75% {
+        transform: translateY(-15px) rotate(5deg) rotate3d(1, 1, 0, 270deg);
+    }
+}
+
+@keyframes cube-inner-spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Floating diamond */
+.shape-diamond {
+    position: absolute;
+    border: 1.5px solid rgba(61, 220, 132, 0.3);
+    transform: rotate(45deg) rotate3d(1, 1, 0, 30deg);
+    animation: diamond-spin 12s ease-in-out infinite;
+    box-shadow: 0 0 16px rgba(61, 220, 132, 0.15);
+}
+
+.shape-diamond-1 {
+    width: 40px;
+    height: 40px;
+    top: 25%;
+    right: 12%;
+    animation-delay: -2s;
+}
+
+.shape-diamond-2 {
+    width: 24px;
+    height: 24px;
+    top: 65%;
+    right: 30%;
+    animation-delay: -6s;
+    animation-duration: 8s;
+}
+
+.shape-diamond-3 {
+    width: 16px;
+    height: 16px;
+    top: 45%;
+    left: 8%;
+    animation-delay: -4s;
+    animation-duration: 15s;
+}
+
+@keyframes diamond-spin {
+    0% {
+        transform: rotate(45deg) rotate3d(1, 1, 0, 0deg) translateY(0px);
+    }
+
+    33% {
+        transform: rotate(75deg) rotate3d(1, 1, 0, 120deg) translateY(-20px);
+    }
+
+    66% {
+        transform: rotate(105deg) rotate3d(1, 1, 0, 240deg) translateY(-10px);
+    }
+
+    100% {
+        transform: rotate(45deg) rotate3d(1, 1, 0, 360deg) translateY(0px);
+    }
+}
+
+/* Scan beam */
+.shape-scan-beam {
+    position: absolute;
+    width: 1px;
+    top: 15%;
+    bottom: 15%;
+    right: calc(18% + 50px);
+    background: linear-gradient(180deg,
+            transparent 0%,
+            rgba(61, 220, 132, 0.6) 40%,
+            rgba(61, 220, 132, 0.8) 50%,
+            rgba(61, 220, 132, 0.6) 60%,
+            transparent 100%);
+    filter: blur(1px);
+    animation: scan-beam 3.5s ease-in-out infinite;
+    box-shadow: 0 0 8px rgba(61, 220, 132, 0.5);
+}
+
+@keyframes scan-beam {
+    0% {
+        opacity: 0;
+        transform: translateY(-60px);
+    }
+
+    15% {
+        opacity: 1;
+    }
+
+    85% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(60px);
+    }
+}
+
+/* ── ORBS ─────────────────────────────────────────────────────────────── */
+.parallax-midground {
+    position: absolute;
+    inset: -100px;
+    pointer-events: none;
+    z-index: 3;
 }
 
 .parallax-orb {
     position: absolute;
     border-radius: 50%;
     background: radial-gradient(circle at 40% 35%,
-            rgba(61, 220, 132, 0.18) 0%,
-            rgba(61, 220, 132, 0.06) 50%,
-            transparent 100%);
-    backdrop-filter: blur(1px);
-    border: 1px solid rgba(61, 220, 132, 0.15);
-    animation: float-idle 4s ease-in-out infinite;
+            rgba(61, 220, 132, 0.22) 0%,
+            rgba(61, 220, 132, 0.06) 40%,
+            transparent 70%);
+    filter: blur(1px);
+    animation: orb-float 7s ease-in-out infinite;
     will-change: transform;
 }
 
-/* Stagger floats */
 .parallax-orb:nth-child(2) {
-    animation-delay: -1.2s;
-    animation-duration: 4.8s;
+    animation-delay: -2.5s;
+    animation-duration: 8.5s;
 }
 
 .parallax-orb:nth-child(3) {
-    animation-delay: -2.4s;
-    animation-duration: 5.5s;
+    animation-delay: -1s;
+    animation-duration: 11s;
 }
 
 .parallax-orb:nth-child(4) {
-    animation-delay: -0.8s;
-    animation-duration: 3.8s;
+    animation-delay: -4s;
+    animation-duration: 6.5s;
 }
 
 .parallax-orb:nth-child(5) {
-    animation-delay: -3s;
-    animation-duration: 6.2s;
+    animation-delay: -1.8s;
+    animation-duration: 9s;
 }
 
 .parallax-orb:nth-child(6) {
-    animation-delay: -1.7s;
-    animation-duration: 4.2s;
+    animation-delay: -3.2s;
+    animation-duration: 7.2s;
 }
 
-.parallax-orb:nth-child(7) {
-    animation-delay: -0.4s;
-    animation-duration: 5.8s;
+@keyframes orb-float {
+
+    0%,
+    100% {
+        transform: translateY(0px) scale(1);
+    }
+
+    50% {
+        transform: translateY(-20px) scale(1.04);
+    }
 }
 
-.parallax-orb:nth-child(8) {
-    animation-delay: -2.1s;
-    animation-duration: 4.5s;
-}
-
+/* ── FOREGROUND ───────────────────────────────────────────────────────── */
 .parallax-foreground {
     position: relative;
-    z-index: 1;
+    z-index: 10;
+    width: 100%;
+    padding: 60px 0;
+}
+
+/* ── HERO SPLIT GRID ──────────────────────────────────────────────────── */
+.hero-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+}
+
+/* ── LEFT: TEXT COLUMN ────────────────────────────────────────────────── */
+.hero-text-col {
     will-change: transform;
+}
+
+.hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: reveal-up 0.7s var(--ease-premium) 0.1s forwards;
+}
+
+.hero-eyebrow-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px rgba(61, 220, 132, 0.7);
+    animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+
+    0%,
+    100% {
+        box-shadow: 0 0 6px rgba(61, 220, 132, 0.6);
+    }
+
+    50% {
+        box-shadow: 0 0 18px rgba(61, 220, 132, 1), 0 0 36px rgba(61, 220, 132, 0.4);
+    }
+}
+
+.hero-headline {
+    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    font-size: clamp(42px, 5.5vw, 72px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+    background: linear-gradient(175deg, #ffffff 0%, #d0d0d8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: reveal-up 0.8s var(--ease-premium) 0.2s forwards;
+    /* 3D depth text shadow using filter */
+    filter: drop-shadow(0 2px 0 rgba(61, 220, 132, 0.12)) drop-shadow(0 4px 0 rgba(61, 220, 132, 0.06)) drop-shadow(0 8px 20px rgba(0, 0, 0, 0.4));
+}
+
+.hero-headline-accent {
+    background: linear-gradient(135deg, #3DDC84 0%, #63E8A0 60%, #a8f5d0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 20px rgba(61, 220, 132, 0.35));
+}
+
+.hero-sub {
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--text-secondary);
+    max-width: 460px;
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: reveal-up 0.8s var(--ease-premium) 0.35s forwards;
+}
+
+/* ── HERO STATS ───────────────────────────────────────────────────────── */
+.hero-stats {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    opacity: 0;
+    animation: reveal-up 0.8s var(--ease-premium) 0.5s forwards;
+}
+
+.hero-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.hero-stat-num {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    text-shadow: 0 0 20px rgba(61, 220, 132, 0.4);
+}
+
+.hero-stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.hero-stat-divider {
+    width: 1px;
+    height: 36px;
+    background: var(--divider);
+}
+
+/* ── RIGHT: UPLOAD COLUMN ─────────────────────────────────────────────── */
+.hero-upload-col {
+    opacity: 0;
+    animation: reveal-right 0.9s var(--ease-premium) 0.3s forwards;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* 3D tilt wrapper — perspective set here so rotations are in 3D space */
+.hero-upload-3d {
+    width: 100%;
+    max-width: 360px;
+    transition: transform 0.08s linear, box-shadow 0.08s linear;
+    will-change: transform;
+    transform-style: preserve-3d;
+    border-radius: 16px;
+    /* Floating idle animation */
+    animation: card-float-idle 5s ease-in-out infinite;
+}
+
+@keyframes card-float-idle {
+
+    0%,
+    100% {
+        transform: perspective(900px) rotateX(2deg) rotateY(-2deg) translateZ(0px);
+    }
+
+    33% {
+        transform: perspective(900px) rotateX(-2deg) rotateY(3deg) translateZ(8px);
+    }
+
+    66% {
+        transform: perspective(900px) rotateX(3deg) rotateY(-1deg) translateZ(4px);
+    }
+}
+
+/* When JS is actively tilting, override animation */
+.hero-upload-3d.tilting {
+    animation: none;
+}
+
+/* ── ENTRANCE ANIMATIONS ──────────────────────────────────────────────── */
+@keyframes reveal-up {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes reveal-right {
+    from {
+        opacity: 0;
+        transform: translateX(32px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ── RESPONSIVE ───────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+    .hero-split {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .parallax-hero-wrap {
+        min-height: auto;
+    }
+
+    .parallax-foreground {
+        padding: 40px 0;
+    }
+
+    .hero-upload-col {
+        animation: reveal-up 0.9s var(--ease-premium) 0.3s forwards;
+    }
+
+    .hero-upload-3d {
+        max-width: 100%;
+    }
+
+    .shape-ring-1,
+    .shape-ring-2,
+    .shape-ring-3 {
+        right: 50%;
+        top: auto;
+        bottom: -60px;
+    }
+}
+
+@media (max-width: 640px) {
+    .hero-stats {
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .shape-cube,
+    .shape-diamond {
+        display: none;
+    }
 }

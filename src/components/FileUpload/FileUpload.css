@@ -1,93 +1,12 @@
 /* ==========================================================================
-   HERO SECTION — Two-column asymmetric layout
+   UPLOAD MODULE — standalone upload zone (hero layout is in ParallaxHero)
    ========================================================================== */
-.hero-section {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: center;
-    padding: 96px 0 80px;
-    min-height: 580px;
-}
-
-/* ── LEFT COLUMN ── */
-.hero-left {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-}
-
-.hero-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 24px;
-    opacity: 0.9;
-}
-
-.hero-headline {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: clamp(36px, 5vw, 56px);
-    font-weight: 700;
-    line-height: 1.08;
-    letter-spacing: -0.03em;
-    color: var(--text-primary);
-    margin-bottom: 28px;
-}
-
-.hero-headline-accent {
-    color: var(--text-secondary);
-    font-weight: 600;
-}
-
-.hero-sub {
-    font-size: 16px;
-    line-height: 1.75;
-    color: var(--text-secondary);
-    max-width: 440px;
-    margin-bottom: 40px;
-}
-
-/* ── TRUST ROW ── */
-.hero-trust-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.trust-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-}
-
-.trust-item svg {
-    color: var(--accent);
-    flex-shrink: 0;
-}
-
-.trust-sep {
-    color: var(--divider);
-    font-size: 16px;
-    line-height: 1;
-}
-
-/* ── RIGHT COLUMN ── */
-.hero-right {
+.upload-module {
     position: relative;
     display: flex;
     flex-direction: column;
     gap: 12px;
+    width: 100%;
 }
 
 /* Ambient radial backlight behind the upload module */
@@ -116,21 +35,20 @@
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 16px;
-    padding: 32px 30px;
+    padding: 28px 24px;
     text-align: center;
     cursor: pointer;
-    min-height: 200px;
+    min-height: 170px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 10px;
     outline: none;
     transition:
         border-color 0.35s var(--ease-premium),
         background 0.35s var(--ease-premium),
-        box-shadow 0.35s var(--ease-premium),
-        transform 0.35s var(--ease-premium);
+        box-shadow 0.35s var(--ease-premium);
     box-shadow: var(--shadow-sm), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 

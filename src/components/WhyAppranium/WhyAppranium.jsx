@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { HiOutlineCheck, HiOutlineXMark } from 'react-icons/hi2';
 import './WhyAppranium.css';
 
@@ -21,14 +21,34 @@ function Cell({ yes }) {
 }
 
 export function WhyAppranium() {
+    const sectionRef = useRef(null);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('reveal-visible');
+                    }
+                });
+            },
+            { threshold: 0.08 }
+        );
+
+        const items = sectionRef.current?.querySelectorAll('.reveal-item');
+        items?.forEach((el) => observer.observe(el));
+
+        return () => observer.disconnect();
+    }, []);
+
     return (
-        <section className="wa-section">
-            <div className="wa-header">
-                <span className="wa-label">COMPARISON</span>
+        <section ref={sectionRef} className="wa-section">
+            <div className="wa-header reveal-item">
+                <span className="wa-label">Comparison</span>
                 <h2 className="wa-title">Why not just use VirusTotal?</h2>
                 <p className="wa-sub">VirusTotal checks for known malware. Appranium analyzes <em>what an app can do to you</em> — before it installs.</p>
             </div>
-            <div className="wa-table-wrap">
+            <div className="wa-table-wrap reveal-item" style={{ transitionDelay: '0.15s' }}>
                 <table className="wa-table">
                     <thead>
                         <tr>
